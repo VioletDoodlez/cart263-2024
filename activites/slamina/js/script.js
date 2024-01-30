@@ -185,9 +185,14 @@ function setup() {
 Description of draw()
 */
 function draw() {
-    background(255, 100, 156);
+    background(0);
 
-
+    if (currentAnswer === currentAnimal) {
+        fill(0, 255, 0);
+    }
+    else {
+        fill(255, 0, 0);
+    }
 }
 
 function reverseString(string) {
@@ -219,4 +224,5 @@ function handleSpeechInput() {
             parts[1] = guessedAnimal;
         }
     }
+    console.log(currentAnswer);
 }
