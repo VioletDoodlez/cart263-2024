@@ -8,7 +8,7 @@ author, and this description to match your project!
 
 "use strict";
 
-const speechRecgnizer = new p5.SpeechRec();
+const speechRecognizer = new p5.SpeechRec();
 
 const speechSynthesizer = new p5.speechSynthesizer();
 
@@ -155,6 +155,8 @@ const animals = {
 
 let currentAnimal = [];
 
+let currentAnswer = [];
+
 /**
 Description of preload
 */
@@ -169,7 +171,13 @@ Description of setup
 function setup() {
     createCanvas(500, 500);
 
+    speechRecognizer.continuous = true;
+    speechRecognizer.onResult = handleSpeechInput;
+    speechRecognizer.start();
 
+    textSize(100);
+    textStyle(BOLD);
+    textAlign(CENTER);
 }
 
 
@@ -177,6 +185,8 @@ function setup() {
 Description of draw()
 */
 function draw() {
+    background(255, 100, 156);
+
 
 }
 
@@ -196,4 +206,17 @@ function mousePressed() {
     let reverseAnimal = reverseString(currentAnimal);
 
     speechSynthesizer.speak(reverseAnimal);
+}
+
+function handleSpeechInput() {
+    let guessedAnimal = `what?`;
+
+    if (speechRecognizer.resultValue) {
+        let lowerCaseResult = speechRecognizer.resultString.toLowerCase();
+        let parts = lowerCaseResult.split(`i think it is `);
+
+        if (parts > 1) {
+            parts[1] = guessedAnimal;
+        }
+    }
 }
