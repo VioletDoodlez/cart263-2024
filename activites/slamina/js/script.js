@@ -193,6 +193,7 @@ function draw() {
     else {
         fill(255, 0, 0);
     }
+    text(currentAnswer, width / 2, height / 2);
 }
 
 function reverseString(string) {
