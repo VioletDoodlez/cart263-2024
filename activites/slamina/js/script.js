@@ -8,10 +8,6 @@ author, and this description to match your project!
 
 "use strict";
 
-const speechRecognizer = new p5.SpeechRec();
-
-const speechSynthesizer = new p5.speechSynthesizer();
-
 const animals = [
     "aardvark",
     "alligator",
@@ -149,6 +145,10 @@ const animals = [
     "zebra"
 ];
 
+const speechRecognizer = new p5.SpeechRec();
+
+const speechSynthesizer = new p5.Speech();
+
 let currentAnimal = ``;
 
 let currentAnswer = ``;
@@ -217,7 +217,7 @@ function handleSpeechInput() {
         let lowerCaseResult = speechRecognizer.resultString.toLowerCase();
         let parts = lowerCaseResult.split(`i think it is `);
 
-        if (parts > 1) {
+        if (parts.length > 1) {
             guessedAnimal = parts[1];
         }
     }
