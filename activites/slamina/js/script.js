@@ -145,13 +145,12 @@ const animals = [
     "zebra"
 ];
 
-const speechRecognizer = new p5.SpeechRec();
+let currentAnimal = '';
+let currentAnswer = '';
 
 const speechSynthesizer = new p5.Speech();
+const speechRecognizer = new p5.SpeechRec();
 
-let currentAnimal = ``;
-
-let currentAnswer = ``;
 
 /**
 Description of preload
@@ -192,12 +191,27 @@ function draw() {
     text(currentAnswer, width / 2, height / 2);
 }
 
+function handleSpeechInput() {
+    let guessedAnimal = 'what?';
+
+    if (speechRecognizer.resultValue) {
+        let lowerCaseResult = speechRecognizer.resultString.toLowerCase();
+        let parts = lowerCaseResult.split('i think it is ');
+
+        if (parts.length > 1) {
+            guessedAnimal = parts[1];
+        }
+    }
+    currentAnswer = guessedAnimal;
+    console.log(currentAnswer);
+}
+
 function reverseString(string) {
-    let characters = string.split(``);
+    let characters = string.split('');
 
     let reverseCharacters = characters.reverse();
 
-    let result = reverseCharacters.join(``);
+    let result = reverseCharacters.join('');
 
     return result;
 }
@@ -210,17 +224,3 @@ function mousePressed() {
     speechSynthesizer.speak(reverseAnimal);
 }
 
-function handleSpeechInput() {
-    let guessedAnimal = `what?`;
-
-    if (speechRecognizer.resultValue) {
-        let lowerCaseResult = speechRecognizer.resultString.toLowerCase();
-        let parts = lowerCaseResult.split(`i think it is `);
-
-        if (parts.length > 1) {
-            guessedAnimal = parts[1];
-        }
-    }
-    guessedAnimal = currentAnswer;
-    console.log(currentAnswer);
-}
