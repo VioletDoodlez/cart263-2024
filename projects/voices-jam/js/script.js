@@ -9,22 +9,23 @@
 "use strict";
 
 const commands = [
+
     {
         "command": /where are we (.*)/,
         "callback": setLocation
     },
-    {
-        "command": /why are we here (.*)/,
-        "callback": setReason
-    },
-    {
-        "command": /alien life(.*)/,
-        "callback": setExaplination
-    }
+    // {
+    //     "command": /why are we here (.*)/,
+    //     "callback": setReason
+    // },
+    // {
+    //     "command": /alien life(.*)/,
+    //     "callback": setExaplination
+    // }
 ];
 
 let subtitles = '';
-let showText = false;
+let lastFinishedSpeaking = 0;
 
 const speechSynthesizer = new p5.Speech();
 const speechRecognizer = new p5.SpeechRec();
@@ -46,12 +47,15 @@ function setup() {
     createCanvas(500, 500);
 
     speechRecognizer.continuous = true;
-    speechRecognizer.onResult = handleSpeechInput;
+    speechRecognizer.onResult = handleCommand;
     speechRecognizer.start();
 
-    speechSynthesizer.onStart = speechGo;
-    speechSynthesizer.onEnd = speechStop;
-
+    speechSynthesizer.onEnd = () => {
+        setTimeout(() => {
+            lastFinishedSpeaking = millis();
+            subtitles = ``;
+        }, 500);
+    };
     speechSynthesizer.speak('Please state your identity.');
 }
 
@@ -62,22 +66,23 @@ function setup() {
 function draw() {
     background(0);
 
-    push();
-    textSize(20);
-    textAlign(CENTER);
-    rectMode(CENTER);
-    fill(0, 255, 0);
-    text(subtitles, 35, 35, 35, 35);
-    pop();
+    if (subtitles != ``) {
+        textSize(20);
+        textAlign(CENTER);
+        rectMode(CENTER);
+        fill(0, 255, 0);
+        text(subtitles, 35, 35, 35, 35);
+    }
+
 }
 
 function handleCommand() {
-    if (!voiceRecognizer.resultValue) {
+    if (!speechRecognizer.resultValue) {
         return;
     }
 
     for (let command of commands) {
-        let lowercase = voiceRecognizer.resultString.toLowerCase();
+        let lowercase = speechRecognizer.resultString.toLowerCase();
         let match = lowercase.match(command.command);
         console.log(match);
         if (match && match.length > 1) {
@@ -86,15 +91,20 @@ function handleCommand() {
     }
 }
 
-function setLocation() {
-    if (data[1] === "where are we")
+function setLocation(data) {
+    if (data[1] === "where are we") {
+        displayLocation;
+    }
 
 }
 
+function displayLocation() {
+    push();
+    say('We are currently orbitting the dwarf planet known as RS-79.');
+    pop();
+}
 
 function handleSpeechInput() {
-    currentSpeech = `"${speechRecognizer.resultString}"`;
-
     console.log(speechRecognizer.resultString.toLowerCase());
 
     if (speechRecognizer.resultString.toLowerCase() === "ripley") {
@@ -104,9 +114,9 @@ function handleSpeechInput() {
     //     speechSynthesizer.speak('You are not authorized to view these files.');
     // }
 
-    if (speechRecognizer.resultString.toLowerCase() === "where are we") {
-        speechSynthesizer.speak('We are current orbitting the dwarf planet known as RS-79.');
-    }
+    // if (speechRecognizer.resultString.toLowerCase() === "where are we") {
+    //     speechSynthesizer.speak('We are current orbitting the dwarf planet known as RS-79.');
+    // }
     else if (speechRecognizer.resultString.toLowerCase() === "why are we here") {
         speechSynthesizer.speak('I am programmed to stop near planets that are suspected to contain alien life.');
     }
@@ -122,10 +132,3 @@ function handleSpeechInput() {
     // }
 }
 
-function speechGo() {
-    showText = true;
-}
-
-function speechStop() {
-    showText = false;
-}
