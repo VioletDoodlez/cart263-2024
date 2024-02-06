@@ -50,13 +50,14 @@ function setup() {
     speechRecognizer.onResult = handleCommand;
     speechRecognizer.start();
 
+    speechSynthesizer.speak('Please state your identity.');
+
     speechSynthesizer.onEnd = () => {
         setTimeout(() => {
             lastFinishedSpeaking = millis();
             subtitles = ``;
         }, 500);
     };
-    speechSynthesizer.speak('Please state your identity.');
 }
 
 
@@ -92,43 +93,43 @@ function handleCommand() {
 }
 
 function setLocation(data) {
-    if (data[1] === "where are we") {
-        displayLocation;
+    if (data[1] === "computer") {
+        speechSynthesizer.speak('We are currently orbitting the dwarf planet known as RS-79.');
     }
 
 }
 
 function displayLocation() {
     push();
-    say('We are currently orbitting the dwarf planet known as RS-79.');
+
     pop();
 }
 
-function handleSpeechInput() {
-    console.log(speechRecognizer.resultString.toLowerCase());
+// function handleSpeechInput() {
+//     console.log(speechRecognizer.resultString.toLowerCase());
 
-    if (speechRecognizer.resultString.toLowerCase() === "ripley") {
-        speechSynthesizer.speak('Welcome, Captain Ripley. I am sister. How may I help you?');
-    }
-    // else {
-    //     speechSynthesizer.speak('You are not authorized to view these files.');
-    // }
+//     if (speechRecognizer.resultString.toLowerCase() === "ripley") {
+//         speechSynthesizer.speak('Welcome, Captain Ripley. I am sister. How may I help you?');
+//     }
+//     // else {
+//     //     speechSynthesizer.speak('You are not authorized to view these files.');
+//     // }
 
-    // if (speechRecognizer.resultString.toLowerCase() === "where are we") {
-    //     speechSynthesizer.speak('We are current orbitting the dwarf planet known as RS-79.');
-    // }
-    else if (speechRecognizer.resultString.toLowerCase() === "why are we here") {
-        speechSynthesizer.speak('I am programmed to stop near planets that are suspected to contain alien life.');
-    }
-    else if (speechRecognizer.resultString.toLowerCase() === "alien life") {
-        speechSynthesizer.speak('The Wainright Atari corporation has made it their mission to know which planets are optimal for colonization.');
-    }
-    else if (speechRecognizer.resultString.toLowerCase() === "surely you can't be serious") {
-        speechSynthesizer.speak('I am serious. And do not call me Shirley.');
-    }
+//     // if (speechRecognizer.resultString.toLowerCase() === "where are we") {
+//     //     speechSynthesizer.speak('We are current orbitting the dwarf planet known as RS-79.');
+//     // }
+//     else if (speechRecognizer.resultString.toLowerCase() === "why are we here") {
+//         speechSynthesizer.speak('I am programmed to stop near planets that are suspected to contain alien life.');
+//     }
+//     else if (speechRecognizer.resultString.toLowerCase() === "alien life") {
+//         speechSynthesizer.speak('The Wainright Atari corporation has made it their mission to know which planets are optimal for colonization.');
+//     }
+//     else if (speechRecognizer.resultString.toLowerCase() === "surely you can't be serious") {
+//         speechSynthesizer.speak('I am serious. And do not call me Shirley.');
+//     }
 
-    // else {
-    //     speechSynthesizer.speak('Can you repeat that, Captain?');
-    // }
-}
+//     // else {
+//     //     speechSynthesizer.speak('Can you repeat that, Captain?');
+//     // }
+// }
 
