@@ -1,12 +1,30 @@
 /**
- * Title of Project
- * Author Name
+ * Voices Jam
+ * Nicole Covaliu
  * 
  * This is a template. You must fill in the title, author, 
  * and this description to match your project!
  */
 
 "use strict";
+
+const commands = [
+    {
+        "command": /where are we (.*)/,
+        "callback": setLocation
+    },
+    {
+        "command": /why are we here (.*)/,
+        "callback": setReason
+    },
+    {
+        "command": /alien life(.*)/,
+        "callback": setExaplination
+    }
+];
+
+let subtitles = '';
+let showText = false;
 
 const speechSynthesizer = new p5.Speech();
 const speechRecognizer = new p5.SpeechRec();
@@ -31,6 +49,9 @@ function setup() {
     speechRecognizer.onResult = handleSpeechInput;
     speechRecognizer.start();
 
+    speechSynthesizer.onStart = speechGo;
+    speechSynthesizer.onEnd = speechStop;
+
     speechSynthesizer.speak('Please state your identity.');
 }
 
@@ -39,18 +60,49 @@ function setup() {
  * Description of draw()
 */
 function draw() {
+    background(0);
+
+    push();
+    textSize(20);
+    textAlign(CENTER);
+    rectMode(CENTER);
+    fill(0, 255, 0);
+    text(subtitles, 35, 35, 35, 35);
+    pop();
+}
+
+function handleCommand() {
+    if (!voiceRecognizer.resultValue) {
+        return;
+    }
+
+    for (let command of commands) {
+        let lowercase = voiceRecognizer.resultString.toLowerCase();
+        let match = lowercase.match(command.command);
+        console.log(match);
+        if (match && match.length > 1) {
+            command.callback(match);
+        }
+    }
+}
+
+function setLocation() {
+    if (data[1] === "where are we")
 
 }
 
+
 function handleSpeechInput() {
-    currentSpeech = speechRecognizer.resultString;
+    currentSpeech = `"${speechRecognizer.resultString}"`;
+
+    console.log(speechRecognizer.resultString.toLowerCase());
 
     if (speechRecognizer.resultString.toLowerCase() === "ripley") {
         speechSynthesizer.speak('Welcome, Captain Ripley. I am sister. How may I help you?');
     }
-    else {
-        speechSynthesizer.speak('You are not authorized to view these files.');
-    }
+    // else {
+    //     speechSynthesizer.speak('You are not authorized to view these files.');
+    // }
 
     if (speechRecognizer.resultString.toLowerCase() === "where are we") {
         speechSynthesizer.speak('We are current orbitting the dwarf planet known as RS-79.');
@@ -65,7 +117,15 @@ function handleSpeechInput() {
         speechSynthesizer.speak('I am serious. And do not call me Shirley.');
     }
 
-    else {
-        speechSynthesizer.speak('Can you repeat that, Captain?');
-    }
+    // else {
+    //     speechSynthesizer.speak('Can you repeat that, Captain?');
+    // }
+}
+
+function speechGo() {
+    showText = true;
+}
+
+function speechStop() {
+    showText = false;
 }
