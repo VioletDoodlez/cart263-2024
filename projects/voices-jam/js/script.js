@@ -58,8 +58,11 @@ function handleSpeechInput() {
     else if (speechRecognizer.resultString.toLowerCase() === "why are we here") {
         speechSynthesizer.speak('I am programmed to stop near planets that are suspected to contain alien life.');
     }
-    if (speechRecognizer.resultString.toLowerCase() === "alien life") {
+    else if (speechRecognizer.resultString.toLowerCase() === "alien life") {
         speechSynthesizer.speak('The Wainright Atari corporation has made it their mission to know which planets are optimal for colonization.');
+    }
+    else if (speechRecognizer.resultString.toLowerCase() === "surely you can't be serious") {
+        speechSynthesizer.speak('I am serious. And do not call me Shirley.');
     }
 
     else {
