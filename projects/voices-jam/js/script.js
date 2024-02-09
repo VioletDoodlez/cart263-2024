@@ -148,7 +148,7 @@ function setRejection() { //refuse access to other names (just for show)
 
 function setMeeting(data) { //responds to questions starting with "why"
     if (data[1] === "are you" || data[1] === "is sister") {
-        say('I am SI/ST/UR, the control system for the Nostromo. I assist with navigation and data collection. \n You, Commander, have acces to my numerous files. \n Just ask me who, what, where or why.');
+        say('I am SI/ST/UR, the control system for the Nostromo. I assist with navigation and data collection. \n You, Commander, have access to my numerous files. \n Just ask me who, what, where or why.');
     }
     else if (data[1] === "is the cat" || data[1] === "is jonesy") { //reference to cat from Alien(1979)
         say('A cat residing on the Nostromo. \nAccording to the crew, he is the ships mascot.');
