@@ -19,6 +19,80 @@ let cocossd;
 // The current set of predictions made by CocoSsd once it's running
 let predictions = [];
 
+let objects = [
+
+    {
+        label: "cell phone",
+        description: "Communication box"
+    },
+    {
+        label: "keyboard",
+        description: "Machine communicatior"
+    },
+    {
+        label: "mouse",
+        description: "Machine animal"
+    },
+    {
+        label: "bottle",
+        description: "Liquid tube"
+    },
+    {
+        label: "cup",
+        description: "Liquid holder"
+    },
+    {
+        label: "bowl",
+        description: "Food retainer"
+    },
+    {
+        label: "spoon",
+        description: "Scooping device"
+    },
+    {
+        label: "fork",
+        description: "Stabbing device"
+    },
+    {
+        label: "knife",
+        description: "Slicing device"
+    },
+    {
+        label: "apple",
+        description: "Red food-ball"
+    },
+    {
+        label: "banana",
+        description: "Yellow food-tube"
+    },
+    {
+        label: "book",
+        description: "Keeper of Knowledge"
+    },
+    {
+        label: "scissors",
+        description: "Separator"
+    },
+    {
+        label: "teddy bear",
+        description: "Fake animal"
+    },
+    {
+        label: "toothbrush",
+        description: "Tusk cleaner"
+    },
+];
+
+let currentObject = undefined;
+
+let desc = {
+    fill: {
+        r: 0,
+        g: 255,
+        b: 0,
+    }
+}
+
 /**
 Starts the webcam and the ObjectDetector
 */
@@ -26,11 +100,16 @@ function setup() {
     createCanvas(640, 480);
 
     // Start webcam and hide the resulting HTML element
-    video = createCapture(VIDEO);
+    video = createCapture(VIDEO, videoReady);
     video.hide();
 
     // Start the CocoSsd model and when it's ready start detection
     // and switch to the running state
+
+    currentObject = random(objects);
+}
+
+function videoReady() {
     cocossd = ml5.objectDetector('cocossd', {}, function () {
         // Ask CocoSsd to start detecting objects, calls gotResults
         // if it finds something
@@ -87,9 +166,25 @@ Displays the webcam.
 If there are currently objects detected it outlines them and labels them
 with the name and confidence value.
 */
+
 function running() {
+
     // Display the webcam
     image(video, 0, 0, width, height);
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(TOP, LEFT);
+    text(`Find:`, width / 5 - 75, height / 5 - 70);
+    pop();
+
+    push();
+    textSize(22);
+    textAlign(TOP, LEFT);
+    fill(desc.fill.g, desc.fill.r, desc.fill.b)
+    text(currentObject.description, width / 5 - 75, height / 5 - 50);
+    pop();
 
     // Check if there currently predictions to display
     if (predictions) {
@@ -98,7 +193,12 @@ function running() {
             // Get the object predicted
             let object = predictions[i];
             // Highlight it on the canvas
-            highlightObject(object);
+            if (predictions[i].label !== "person" && predictions[i].confidence >= 0.6) {
+                highlightObject(object);
+            }
+            if (predictions[i].label === currentObject.label) {
+                fill(desc.fill.r, desc.fill.g, desc.fill.b);
+            }
         }
     }
 }
