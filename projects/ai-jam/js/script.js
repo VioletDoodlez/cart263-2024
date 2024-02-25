@@ -9,7 +9,7 @@
 "use strict";
 
 // Current state of program
-let state = `title`; // loading, running
+let state = `loading`; // loading, running
 // User's webcam
 let video;
 // The name of our model
@@ -106,6 +106,7 @@ function setup() {
     createCanvas(640, 480);
 
     // Start webcam and hide the resulting HTML element
+
     video = createCapture(VIDEO, videoReady);
     video.hide();
 
@@ -116,7 +117,7 @@ function setup() {
     currentObject2 = random(objects);
     currentObject3 = random(objects);
 
-    if (currentObject1.description === currentObject2.description || currentObject1.description === currentObject3.description || currentObject3.description === currentObject2.description) {
+    if (currentObject1 === currentObject2 || currentObject1 === currentObject3 || currentObject3 === currentObject2) {
         currentObject1 = random(objects);
         currentObject2 = random(objects);
         currentObject3 = random(objects);
@@ -124,6 +125,7 @@ function setup() {
 }
 
 function videoReady() {
+
     cocossd = ml5.objectDetector('cocossd', {}, function () {
         // Ask CocoSsd to start detecting objects, calls gotResults
         // if it finds something
@@ -131,6 +133,7 @@ function videoReady() {
         // Switch to the running state
         state = `running`;
     });
+
 }
 
 /**
@@ -153,54 +156,15 @@ function gotResults(err, results) {
 Handles the two states of the program: loading, running
 */
 function draw() {
-    if (state === `title`) {
-        title();
-    }
     if (state === `loading`) {
         loading();
     }
     else if (state === `running`) {
         running();
     }
-}
-
-function title() {
-    background(255);
-
-    push();
-    textSize(32);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    text(`Greetings "human"!`, width / 2, height / 2);
-    pop();
-
-    push();
-    textSize(22);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    text(`We are sending you this message because we need your help`, width / 2, height / 2);
-    pop();
-
-    push();
-    textSize(22);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    text(`We are what you call "extraterrestrials" and we have been assigned to collect information on your planet.`, width / 2, height / 2);
-    pop();
-
-    push();
-    textSize(22);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    text(`We have a list of objects that we need to study. You need to find these objects in your residence and show them to the camera on your machine`, width / 2, height / 2);
-    pop();
-
-    push();
-    textSize(22);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    text(`Be warned: we do not have the proper names of these objects, only their descriptions. It is up to you to guess what we mean.`, width / 2, height / 2);
-    pop();
+    else if (state === `end`) {
+        end();
+    }
 }
 
 /**
@@ -280,8 +244,30 @@ function running() {
                 desc.fill.r3 = desc.fill.r3 - 255;
                 desc.fill.g3 = desc.fill.g3 + 255;
             }
+
+            if (desc.fill.r1 === 0 && desc.fill.r2 === 0 && desc.fill.r3 === 0 && desc.fill.g1 === 255 && desc.fill.g2 === 255 && desc.fill.g3 === 255) {
+                state = `end`;
+            }
         }
     }
+}
+
+function end() {
+    background(0);
+
+    push();
+    textSize(32);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`You found all the objects!`, width / 2, height / 2);
+    pop();
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`Thank you! Now all we need is a live human!`, width / 2, height / 2);
+    pop();
 }
 
 /**
@@ -303,3 +289,7 @@ function highlightObject(object) {
     text(`${object.label}, ${object.confidence.toFixed(2)}`, object.x + object.width / 2, object.y + object.height / 2);
     pop();
 }
+
+// function mousePressed() {
+//
+// }
