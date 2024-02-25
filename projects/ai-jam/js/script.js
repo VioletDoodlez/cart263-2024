@@ -9,7 +9,7 @@
 "use strict";
 
 // Current state of program
-let state = `loading`; // loading, running
+let state = `title`; // loading, running
 // User's webcam
 let video;
 // The name of our model
@@ -83,12 +83,18 @@ let objects = [
     },
 ];
 
-let currentObject = undefined;
+let currentObject1 = undefined;
+let currentObject2 = undefined;
+let currentObject3 = undefined;
 
 let desc = {
     fill: {
-        r: 0,
-        g: 255,
+        r1: 255,
+        g1: 0,
+        r2: 255,
+        g2: 0,
+        r3: 255,
+        g3: 0,
         b: 0,
     }
 }
@@ -106,7 +112,15 @@ function setup() {
     // Start the CocoSsd model and when it's ready start detection
     // and switch to the running state
 
-    currentObject = random(objects);
+    currentObject1 = random(objects);
+    currentObject2 = random(objects);
+    currentObject3 = random(objects);
+
+    if (currentObject1.description === currentObject2.description || currentObject1.description === currentObject3.description || currentObject3.description === currentObject2.description) {
+        currentObject1 = random(objects);
+        currentObject2 = random(objects);
+        currentObject3 = random(objects);
+    }
 }
 
 function videoReady() {
@@ -139,12 +153,54 @@ function gotResults(err, results) {
 Handles the two states of the program: loading, running
 */
 function draw() {
+    if (state === `title`) {
+        title();
+    }
     if (state === `loading`) {
         loading();
     }
     else if (state === `running`) {
         running();
     }
+}
+
+function title() {
+    background(255);
+
+    push();
+    textSize(32);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`Greetings "human"!`, width / 2, height / 2);
+    pop();
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`We are sending you this message because we need your help`, width / 2, height / 2);
+    pop();
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`We are what you call "extraterrestrials" and we have been assigned to collect information on your planet.`, width / 2, height / 2);
+    pop();
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`We have a list of objects that we need to study. You need to find these objects in your residence and show them to the camera on your machine`, width / 2, height / 2);
+    pop();
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text(`Be warned: we do not have the proper names of these objects, only their descriptions. It is up to you to guess what we mean.`, width / 2, height / 2);
+    pop();
 }
 
 /**
@@ -182,8 +238,22 @@ function running() {
     push();
     textSize(22);
     textAlign(TOP, LEFT);
-    fill(desc.fill.g, desc.fill.r, desc.fill.b)
-    text(currentObject.description, width / 5 - 75, height / 5 - 50);
+    fill(desc.fill.r1, desc.fill.g1, desc.fill.b)
+    text(currentObject1.description, width / 5 - 75, height / 5 - 50);
+    pop();
+
+    push();
+    textSize(22);
+    textAlign(TOP, LEFT);
+    fill(desc.fill.r2, desc.fill.g2, desc.fill.b)
+    text(currentObject2.description, width / 5 - 75, height / 5 - 30);
+    pop();
+
+    push();
+    textSize(22);
+    textAlign(TOP, LEFT);
+    fill(desc.fill.r3, desc.fill.g3, desc.fill.b)
+    text(currentObject3.description, width / 5 - 75, height / 5 - 10);
     pop();
 
     // Check if there currently predictions to display
@@ -196,8 +266,19 @@ function running() {
             if (predictions[i].label !== "person" && predictions[i].confidence >= 0.6) {
                 highlightObject(object);
             }
-            if (predictions[i].label === currentObject.label) {
-                fill(desc.fill.r, desc.fill.g, desc.fill.b);
+            if (predictions[i].label === currentObject1.label) {
+                desc.fill.r1 = desc.fill.r1 - 255;
+                desc.fill.g1 = desc.fill.g1 + 255;
+            }
+
+            if (predictions[i].label === currentObject2.label) {
+                desc.fill.r2 = desc.fill.r2 - 255;
+                desc.fill.g2 = desc.fill.g2 + 255;
+            }
+
+            if (predictions[i].label === currentObject3.label) {
+                desc.fill.r3 = desc.fill.r3 - 255;
+                desc.fill.g3 = desc.fill.g3 + 255;
             }
         }
     }
