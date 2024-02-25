@@ -25,46 +25,47 @@ let objects = [
         label: "cell phone",
         description: "Communication box"
     },
-    {
-        label: "keyboard",
-        description: "Machine communicatior"
-    },
-    {
-        label: "mouse",
-        description: "Machine animal"
-    },
+    // {
+    //     label: "keyboard",
+    //     description: "Machine communicatior"
+    // },
+    // {
+    //     label: "mouse",
+    //     description: "Machine animal"
+    // },
     {
         label: "bottle",
         description: "Liquid tube"
     },
-    {
-        label: "cup",
-        description: "Liquid holder"
     },
-    {
-        label: "bowl",
-        description: "Food retainer"
-    },
-    {
-        label: "spoon",
-        description: "Scooping device"
-    },
-    {
-        label: "fork",
-        description: "Stabbing device"
-    },
-    {
-        label: "knife",
-        description: "Slicing device"
-    },
-    {
-        label: "apple",
-        description: "Red food-ball"
-    },
-    {
-        label: "banana",
-        description: "Yellow food-tube"
-    },
+    // {
+    //     label: "cup",
+    //     description: "Liquid holder"
+    // },
+    // {
+    //     label: "bowl",
+    //     description: "Food retainer"
+    // },
+    // {
+    //     label: "spoon",
+    //     description: "Scooping device"
+    // },
+    // {
+    //     label: "fork",
+    //     description: "Stabbing device"
+    // },
+    // {
+    //     label: "knife",
+    //     description: "Slicing device"
+    // },
+    // {
+    //     label: "apple",
+    //     description: "Red food-ball"
+    // },
+    // {
+    //     label: "banana",
+    //     description: "Yellow food-tube"
+    // },
     {
         label: "book",
         description: "Keeper of Knowledge"
@@ -73,14 +74,14 @@ let objects = [
         label: "scissors",
         description: "Separator"
     },
-    {
-        label: "teddy bear",
-        description: "Fake animal"
-    },
-    {
-        label: "toothbrush",
-        description: "Tusk cleaner"
-    },
+    // {
+    //     label: "teddy bear",
+    //     description: "Fake animal"
+    // },
+    // {
+    //     label: "toothbrush",
+    //     description: "Tusk cleaner"
+    // },
 ];
 
 let currentObject1 = undefined;
@@ -220,6 +221,19 @@ function running() {
     text(currentObject3.description, width / 5 - 75, height / 5 - 10);
     pop();
 
+    rectMode(CORNER);
+    fill(0);
+    rect(440, 280, 200, 200);
+
+    push();
+    textSize(22);
+    textStyle(BOLD);
+    fill(255);
+    textAlign(TOP, LEFT);
+    text(`Find:`, 440, 280);
+    pop();
+
+
     // Check if there currently predictions to display
     if (predictions) {
         // If so run through the array of predictions
@@ -245,7 +259,7 @@ function running() {
                 desc.fill.g3 = desc.fill.g3 + 255;
             }
 
-            if (desc.fill.r1 === 0 && desc.fill.r2 === 0 && desc.fill.r3 === 0 && desc.fill.g1 === 255 && desc.fill.g2 === 255 && desc.fill.g3 === 255) {
+            if (desc.fill.g1 === 255 && desc.fill.g2 === 255 && desc.fill.g3 === 255) {
                 state = `end`;
             }
         }
