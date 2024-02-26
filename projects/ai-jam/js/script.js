@@ -37,7 +37,6 @@ let objects = [
         label: "bottle",
         description: "Liquid tube"
     },
-    },
     // {
     //     label: "cup",
     //     description: "Liquid holder"
@@ -221,17 +220,17 @@ function running() {
     text(currentObject3.description, width / 5 - 75, height / 5 - 10);
     pop();
 
-    rectMode(CORNER);
-    fill(0);
-    rect(440, 280, 200, 200);
+    // rectMode(CORNER);
+    // fill(0);
+    // rect(440, 280, 200, 200);
 
-    push();
-    textSize(22);
-    textStyle(BOLD);
-    fill(255);
-    textAlign(TOP, LEFT);
-    text(`Find:`, 440, 280);
-    pop();
+    // push();
+    // textSize(22);
+    // textStyle(BOLD);
+    // fill(255);
+    // textAlign(TOP, LEFT);
+    // text(`Find:`, 440, 280);
+    // pop();
 
 
     // Check if there currently predictions to display
