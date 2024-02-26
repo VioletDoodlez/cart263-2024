@@ -2,7 +2,7 @@
  * AI Jam
  * Nicole Covaliu
  * 
- * Object recognition game where the player must guess what the 
+ * Object recognition game where the player must guess what the listed objects are and show them to the camera
  */
 
 "use strict";
@@ -18,62 +18,63 @@ let cocossd;
 // The current set of predictions made by CocoSsd once it's running
 let predictions = [];
 
+// All possible objects that can be listed, mainly ones you can find in your house
 let objects = [
     {
         label: "cell phone",
         description: "Communication box",
         found: false
     },
-    // {
-    //     label: "keyboard",
-    //     description: "Machine communicatior",
-    // found: false
-    // },
-    // {
-    //     label: "mouse",
-    //     description: "Machine animal",
-    // found: false
-    // },
+    {
+        label: "keyboard",
+        description: "Machine communicatior",
+        found: false
+    },
+    {
+        label: "mouse",
+        description: "Machine animal",
+        found: false
+    },
     {
         label: "bottle",
         description: "Liquid tube",
         found: false
     },
-    // {
-    //     label: "cup",
-    //     description: "Liquid holder",
-    // found: false
-    // },
-    // {
-    //     label: "bowl",
-    //     description: "Food retainer",
-    // found: false
-    // },
-    // {
-    //     label: "spoon",
-    //     description: "Scooping device",
-    // found: false
-    // },
-    // {
-    //     label: "fork",
-    //     description: "Stabbing device",
-    // found: false
-    // },
-    // {
-    //     label: "knife",
-    //     description: "Slicing device",
-    // found: false
-    // },
-    // {
-    //     label: "apple",
-    //     description: "Red food-ball",
-    // found: false
-    // },
-    // {
-    //     label: "banana",
-    //     description: "Yellow food-tube",
-    // found: false
-    // },
+    {
+        label: "cup",
+        description: "Liquid holder",
+        found: false
+    },
+    {
+        label: "bowl",
+        description: "Food retainer",
+        found: false
+    },
+    {
+        label: "spoon",
+        description: "Scooping device",
+        found: false
+    },
+    {
+        label: "fork",
+        description: "Stabbing device",
+        found: false
+    },
+    {
+        label: "knife",
+        description: "Slicing device",
+        found: false
+    },
+    {
+        label: "apple",
+        description: "Red food-ball",
+        found: false
+    },
+    {
+        label: "banana",
+        description: "Yellow food-tube",
+        found: false
+    },
     {
         label: "book",
         description: "Keeper of Knowledge",
@@ -84,17 +85,17 @@ let objects = [
         description: "Separator",
         found: false
     },
-    // {
-    //     label: "teddy bear",
-    //     description: "Fake animal",
-    // found: false
+    {
+        label: "teddy bear",
+        description: "Fake animal",
+        found: false
 
-    // },
-    // {
-    //     label: "toothbrush",
-    //     description: "Tusk cleaner",
-    // found: false
-    // },
+    },
+    {
+        label: "toothbrush",
+        description: "Tusk cleaner",
+        found: false
+    },
 ];
 
 // list of objects to find
@@ -197,7 +198,7 @@ function running() {
     // Display the webcam
     image(video, 0, 0, width, height);
 
-    // Display list
+    // Displays list
     push();
     textSize(22);
     textStyle(BOLD);
@@ -210,7 +211,7 @@ function running() {
     textSize(22);
     textAlign(TOP, LEFT);
     if (currentObject1.found) {
-        fill(0, 255, 0); // text colour changes green if found
+        fill(0, 255, 0); // Text colour changes green if found
     }
     else {
         fill(255, 0, 0);
@@ -222,7 +223,7 @@ function running() {
     textSize(22);
     textAlign(TOP, LEFT);
     if (currentObject2.found) {
-        fill(0, 255, 0); // text colour changes green if found
+        fill(0, 255, 0); // Text colour changes green if found
     }
     else {
         fill(255, 0, 0);
@@ -234,7 +235,7 @@ function running() {
     textSize(22);
     textAlign(TOP, LEFT);
     if (currentObject3.found) {
-        fill(0, 255, 0); // text colour changes green if found
+        fill(0, 255, 0); // Text colour changes green if found
     }
     else {
         fill(255, 0, 0);
@@ -242,6 +243,7 @@ function running() {
     text(currentObject3.description, width / 5 - 75, height / 5 - 10);
     pop();
 
+    // Displays instructions
     rectMode(CORNER);
     noStroke();
     fill(0, 0, 0, alpha);
@@ -308,7 +310,7 @@ function running() {
     textSize(12);
     fill(255, 255, 255, alpha);
     textAlign(CENTER, CENTER);
-    text(`You'll have to guess.`, 465, 400)
+    text(`You'll have to guess what they are.`, 465, 400)
     pop();
 
     push();
@@ -329,24 +331,25 @@ function running() {
                 highlightObject(object);
             }
             if (predictions[i].label === currentObject1.label) {
-                currentObject1.found = true;
+                currentObject1.found = true; // Changes state to true if the first object is displayed
             }
 
             if (predictions[i].label === currentObject2.label) {
-                currentObject2.found = true;
+                currentObject2.found = true; // Changes state to true if the second object is displayed
             }
 
             if (predictions[i].label === currentObject3.label) {
-                currentObject3.found = true;
+                currentObject3.found = true; // Changes state to true if the third object is displayed
             }
 
             if (currentObject1.found && currentObject2.found && currentObject3.found) {
-                state = `end`;
+                state = `end`; // Shows end screen when all of the text is green
             }
         }
     }
 }
 
+// Displays end screen when all objects found
 function end() {
     background(0);
 
@@ -388,6 +391,7 @@ function highlightObject(object) {
 }
 
 function mousePressed() {
+    //Removes instructions box when clicked
     let d = dist(415, 200, mouseX, mouseY)
     if (d < 350) {
         alpha = alpha - 255;
