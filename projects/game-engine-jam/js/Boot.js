@@ -5,6 +5,13 @@ class Boot extends Phaser.Scene {
         });
     }
 
+    preload() {
+        this.load.image('wall', 'assets/images/wall.png');
+        this.load.on(`complete`, () => {
+            this.scene.start(`play`);
+        });
+    }
+
     create() {
         let loadingTextStyle = {
             fontFamily: 'sans-serif',

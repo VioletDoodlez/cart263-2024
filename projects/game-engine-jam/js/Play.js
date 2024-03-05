@@ -6,15 +6,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        let style = {
-            fontFamily: 'sans-serif',
-            fontSize: '40px',
-            fill: '#ffffff',
-        };
-
-        let gameDescription = 'Think of a number.';
-
-        this.gameText = this.add.text(100, 100, gameDescription, style);
+        this.wall = this.add.sprite(500, 500, 'wall');
     }
 
     update() {
