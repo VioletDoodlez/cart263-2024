@@ -6,7 +6,7 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('wall', 'assets/images/bg-01.png');
+        this.load.image('bg', 'assets/images/bg-01.png');
 
         this.load.spritesheet('avatar', 'assets/images/philia-walk-sheet-01.png', {
             frameWidth: 400,
@@ -20,16 +20,16 @@ class Boot extends Phaser.Scene {
     }
 
     create() {
-        let loadingTextStyle = {
-            fontFamily: 'sans-serif',
-            fontSize: '40px',
-            fill: '#ffffff',
-            align: 'center'
-        };
-        let loadingString = 'Loading...';
-        this.loadingText = this.add.text(100, 100, loadingString, loadingTextStyle);
+        // let loadingTextStyle = {
+        //     fontFamily: 'sans-serif',
+        //     fontSize: '40px',
+        //     fill: '#ffffff',
+        //     align: 'center'
+        // };
+        // let loadingString = 'Loading...';
+        // this.loadingText = this.add.text(100, 100, loadingString, loadingTextStyle);
 
-        this.scene.start('play');
+        // this.scene.start('play');
     }
 
     update() {
