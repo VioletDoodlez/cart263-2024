@@ -16,6 +16,9 @@ class Play extends Phaser.Scene {
         this.createAnimations();
         this.avatar.play(`idle`);
 
+        this.key = this.physics.add.sprite(1000, 550, 'key');
+        this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
+
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
 
@@ -47,6 +50,10 @@ class Play extends Phaser.Scene {
         };
 
         this.anims.create(idleAnimationConfig);
+    }
+
+    collectItem(avatar, key) {
+        key.destroy();
     }
 
     update() {

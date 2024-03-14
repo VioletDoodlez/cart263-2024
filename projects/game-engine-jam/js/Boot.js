@@ -14,6 +14,8 @@ class Boot extends Phaser.Scene {
             endFrame: 7
         });
 
+        this.load.image('key', 'assets/images/key-01.png');
+
         this.load.on(`complete`, () => {
             this.scene.start(`play`);
         });
