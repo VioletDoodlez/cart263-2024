@@ -6,7 +6,13 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('bg', 'assets/images/bg-01.png');
+        this.load.image('bg', 'assets/images/bg.png');
+
+        this.load.spritesheet('frames', 'assets/images/frames-sheet.png', {
+            frameWidth: 200,
+            frameHeight: 200,
+            endFrame: 2
+        })
 
         this.load.spritesheet('avatar', 'assets/images/philia-walk-sheet-01.png', {
             margin: 100,
@@ -23,6 +29,9 @@ class Boot extends Phaser.Scene {
         })
 
         this.load.image('key', 'assets/images/key-01.png');
+        this.load.image('fire', 'assets/images/fire.png')
+
+        this.load.image('door', 'assets/images/door.png')
 
         this.load.on(`complete`, () => {
             this.scene.start(`play`);
