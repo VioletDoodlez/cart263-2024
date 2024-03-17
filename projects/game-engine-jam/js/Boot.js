@@ -22,6 +22,13 @@ class Boot extends Phaser.Scene {
             endFrame: 7
         });
 
+        this.load.spritesheet('cat', 'assets/images/inky-sheet.png', {
+            frameWidth: 100,
+            frameHeight: 100,
+            endFrame: 8
+        });
+
+
         this.load.spritesheet('box', 'assets/images/box-sheet.png', {
             frameWidth: 300,
             frameHeight: 300,
@@ -34,7 +41,7 @@ class Boot extends Phaser.Scene {
         this.load.image('door', 'assets/images/door.png')
 
         this.load.on(`complete`, () => {
-            this.scene.start(`play`);
+            this.scene.start(`title`);
         });
     }
 

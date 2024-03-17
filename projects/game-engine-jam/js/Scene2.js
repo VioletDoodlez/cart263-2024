@@ -19,6 +19,11 @@ class Scene2 extends Phaser.Scene {
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
 
+        this.cat = this.physics.add.sprite(2300, 500, `cat`);
+        this.cat.setImmovable(true);
+        this.collider = this.physics.add.collider(this.avatar, this.cat);
+        this.cat.play(`sleep`);
+
         this.box = this.physics.add.sprite(1900, 400, 'box');
         this.box.setImmovable(true);
         this.collider = this.physics.add.collider(this.avatar, this.box);
@@ -29,7 +34,7 @@ class Scene2 extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        // this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         this.createAnimations();
     }
@@ -58,6 +63,30 @@ class Scene2 extends Phaser.Scene {
             repeat: 0
         };
         this.anims.create(idleAnimationConfig);
+
+        let wakeAnimationConfig = {
+
+            key: 'wake',
+            frames: this.anims.generateFrameNumbers('cat', {
+
+                start: 1,
+                end: 8
+
+            }),
+            frameRate: 15,
+            repeat: -1
+        };
+        this.anims.create(wakeAnimationConfig);
+
+        let sleepAnimationConfig = {
+            key: 'sleep',
+            frames: this.anims.generateFrameNumbers('cat', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(sleepAnimationConfig);
 
         let blockAnimationConfig = {
             key: 'block',
@@ -94,7 +123,7 @@ class Scene2 extends Phaser.Scene {
             this.avatar.flipX = true;
         }
         else if (this.cursors.right.isDown) {
-            this.avatar.setVelocityX(200);
+            this.avatar.setVelocityX(400);
             this.avatar.flipX = false;
         }
         else {
@@ -121,9 +150,9 @@ class Scene2 extends Phaser.Scene {
         //         })
         //     })
         // }
-        // else if (this.keyZ.isDown && this.avatar.x > 900) {
-        //     this.frames.play('fix', true);
-        // }
+        if (this.keyZ.isDown && this.avatar.x > 2000) {
+            this.cat.play('wake', true);
+        }
     }
 
 }

@@ -6,6 +6,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(1000, 0, 0, 0)
+
         this.width = this.game.canvas.width * 3;
         this.height = this.game.canvas.height;
         this.physics.world.setBounds(0, 0, this.width, this.height);
@@ -16,9 +18,6 @@ class Play extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
-
-        // this.key = this.physics.add.sprite(2300, 530, 'key');
-        // this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
 
         this.fire = this.physics.add.sprite(600, 430, 'fire');
         this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
@@ -153,7 +152,12 @@ class Play extends Phaser.Scene {
             this.physics.world.removeCollider(this.collider);
         }
 
-        if (this.keyZ.isDown && this.avatar.x > 1800 && this.key.destroy == true) {
+        if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
+            this.frames.play('fix', true);
+            this.key = this.physics.add.sprite(700, 530, 'key');
+            this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
+        }
+        else if (this.keyZ.isDown && this.avatar.x > 1800) {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
@@ -161,11 +165,7 @@ class Play extends Phaser.Scene {
                 })
             })
         }
-        else if (this.keyZ.isDown && this.avatar.x > 900) {
-            this.frames.play('fix', true);
-            this.key = this.physics.add.sprite(700, 530, 'key');
-            this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
-        }
+
     }
 }
 
