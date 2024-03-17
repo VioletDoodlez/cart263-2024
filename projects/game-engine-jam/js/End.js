@@ -6,6 +6,7 @@ class End extends Phaser.Scene {
     }
 
     create() {
+        //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
 
         let endText = this.add.text(200, 300, 'Thank you for playing!', {

@@ -6,6 +6,7 @@ class Scene2 extends Phaser.Scene {
     }
 
     create() {
+        //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
 
         this.width = this.game.canvas.width * 3;
@@ -153,7 +154,7 @@ class Scene2 extends Phaser.Scene {
 
     handleInput() {
         if (this.cursors.left.isDown) {
-            this.avatar.setVelocityX(-200);
+            this.avatar.setVelocityX(-400);
             this.avatar.flipX = true;
         }
         else if (this.cursors.right.isDown) {

@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
 
         this.width = this.game.canvas.width * 3;
@@ -95,7 +96,7 @@ class Play extends Phaser.Scene {
 
     handleInput() {
         if (this.cursors.left.isDown) {
-            this.avatar.setVelocityX(-200);
+            this.avatar.setVelocityX(-400);
             this.avatar.flipX = true;
         }
         else if (this.cursors.right.isDown) {
@@ -115,7 +116,7 @@ class Play extends Phaser.Scene {
 
         if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
             this.frames.play('fix', true);
-            this.key = this.physics.add.sprite(700, 530, 'key');
+            this.key = this.physics.add.sprite(760, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
         }
         else if (this.keyZ.isDown && this.avatar.x > 1800 && this.avatar.hasKey === true) {
