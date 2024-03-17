@@ -18,6 +18,7 @@ class Scene2 extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
+        this.avatar.hasFire = false;
 
         this.cat = this.physics.add.sprite(2300, 500, `cat`);
         this.cat.setImmovable(true);
@@ -28,6 +29,10 @@ class Scene2 extends Phaser.Scene {
         this.box.setImmovable(true);
         this.collider = this.physics.add.collider(this.avatar, this.box);
         this.box.play(`block`);
+
+        this.table = this.physics.add.sprite(1000, 500, 'table');
+        this.table.setImmovable(true);
+        this.table.play(`closed`);
 
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
@@ -88,6 +93,30 @@ class Scene2 extends Phaser.Scene {
         };
         this.anims.create(sleepAnimationConfig);
 
+        let closedAnimationConfig = {
+            key: 'closed',
+            frames: this.anims.generateFrameNumbers('table', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(closedAnimationConfig);
+
+        let openAnimationConfig = {
+
+            key: 'open',
+            frames: this.anims.generateFrameNumbers('table', {
+
+                start: 1,
+                end: 2
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(openAnimationConfig);
+
         let blockAnimationConfig = {
             key: 'block',
             frames: this.anims.generateFrameNumbers('box', {
@@ -111,6 +140,11 @@ class Scene2 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(brokeAnimationConfig);
+    }
+
+    collectSpell(avatar, fire) {
+        avatar.hasFire = true;
+        fire.destroy();
     }
 
     update() {
@@ -137,22 +171,26 @@ class Scene2 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        if (this.keyA.isDown && this.avatar.x > 1200) {
+        if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
             this.box.play('broke', true);
             this.physics.world.removeCollider(this.collider);
         }
 
-        // if (this.keyZ.isDown && this.avatar.x > 1800 && this.key.destroy) {
-        //     this.cameras.main.fadeOut(1000, 0, 0, 0);
-        //     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-        //         this.time.delayedCall(1000, () => {
-        //             this.scene.start('scene2');
-        //         })
-        //     })
-        // }
-        if (this.keyZ.isDown && this.avatar.x > 2000) {
-            this.cat.play('wake', true);
+        if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
+            this.table.play('open', true);
+            this.fire = this.physics.add.sprite(1000, 400, 'fire');
+            this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
         }
-    }
+        else if (this.keyZ.isDown && this.avatar.x > 2000) {
+            this.cat.play('wake', true);
+            this.time.delayedCall(1000);
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('end');
+                })
+            })
+        }
 
+    }
 }

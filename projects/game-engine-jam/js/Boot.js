@@ -35,6 +35,12 @@ class Boot extends Phaser.Scene {
             endFrame: 2
         })
 
+        this.load.spritesheet('table', 'assets/images/table-sheet.png', {
+            frameWidth: 200,
+            frameHeight: 200,
+            endFrame: 2
+        })
+
         this.load.image('key', 'assets/images/key-01.png');
         this.load.image('fire', 'assets/images/fire.png')
 

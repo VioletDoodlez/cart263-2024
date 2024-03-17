@@ -18,14 +18,7 @@ class Play extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
-
-        this.fire = this.physics.add.sprite(600, 430, 'fire');
-        this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
-
-        this.box = this.physics.add.sprite(1500, 400, 'box');
-        this.box.setImmovable(true);
-        this.collider = this.physics.add.collider(this.avatar, this.box);
-        this.box.play(`block`);
+        this.avatar.hasKey = false;
 
         this.frames = this.physics.add.sprite(1000, 200, 'frames');
         this.frames.setImmovable(true);
@@ -66,30 +59,6 @@ class Play extends Phaser.Scene {
         };
         this.anims.create(idleAnimationConfig);
 
-        let blockAnimationConfig = {
-            key: 'block',
-            frames: this.anims.generateFrameNumbers('box', {
-                start: 0,
-                end: 0
-            }),
-            repeat: 0
-        };
-        this.anims.create(blockAnimationConfig);
-
-        let brokeAnimationConfig = {
-
-            key: 'broke',
-            frames: this.anims.generateFrameNumbers('box', {
-
-                start: 1,
-                end: 2
-
-            }),
-            frameRate: 2,
-            repeat: -1
-        };
-        this.anims.create(brokeAnimationConfig);
-
         let crookAnimationConfig = {
             key: 'crook',
             frames: this.anims.generateFrameNumbers('frames', {
@@ -116,11 +85,8 @@ class Play extends Phaser.Scene {
     }
 
     collectItem(avatar, key) {
+        avatar.hasKey = true;
         key.destroy();
-    }
-
-    collectSpell(avater, fire) {
-        fire.destroy();
     }
 
     update() {
@@ -133,7 +99,7 @@ class Play extends Phaser.Scene {
             this.avatar.flipX = true;
         }
         else if (this.cursors.right.isDown) {
-            this.avatar.setVelocityX(200);
+            this.avatar.setVelocityX(400);
             this.avatar.flipX = false;
         }
         else {
@@ -147,17 +113,12 @@ class Play extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        if (this.keyA.isDown && this.avatar.x > 1200) {
-            this.box.play('broke', true);
-            this.physics.world.removeCollider(this.collider);
-        }
-
         if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
             this.frames.play('fix', true);
             this.key = this.physics.add.sprite(700, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
         }
-        else if (this.keyZ.isDown && this.avatar.x > 1800) {
+        else if (this.keyZ.isDown && this.avatar.x > 1800 && this.avatar.hasKey === true) {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {

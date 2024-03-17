@@ -5,29 +5,36 @@ class Title extends Phaser.Scene {
         });
     }
 
+    preload() {
+        this.load.image('title', 'assets/images/title.png');
+    }
+
     create() {
-        let titleTextStyle = this.add.text(270, 370, 'Help Philia find her cat', {
+
+        let title = this.add.sprite(400, 200, 'title');
+
+        let missionText = this.add.text(220, 400, 'Help Philia find her cat', {
             fontFamily: 'american-typewriter',
-            fontSize: '30px',
+            fontSize: '40px',
             fill: '#ffffff',
             align: 'center'
         });
 
-        let moveTextStyle = this.add.text(200, 420, 'Use the left and right arrow keys to explore the house', {
-            fontFamily: 'american-typewriter',
-            fontSize: '20px',
-            fill: '#ffffff',
-            align: 'center'
-        });
-
-        let interractTextStyle = this.add.text(270, 460, 'Press [Z] to interract with objects', {
+        let moveText = this.add.text(200, 470, 'Use the left and right arrow keys to explore the house', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
             align: 'center'
         });
 
-        let fireTextStyle = this.add.text(220, 500, 'Press [A] to use a fire spell if your path is blocked', {
+        let interractText = this.add.text(270, 510, 'Press [Z] to interract with objects', {
+            fontFamily: 'american-typewriter',
+            fontSize: '20px',
+            fill: '#ffffff',
+            align: 'center'
+        });
+
+        let fireText = this.add.text(220, 550, 'Press [A] to use a fire spell if your path is blocked', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
