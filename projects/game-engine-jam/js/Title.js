@@ -29,14 +29,14 @@ class Title extends Phaser.Scene {
             align: 'center'
         });
 
-        let interractText = this.add.text(270, 510, 'Press [Z] to interract with objects', {
+        let fireText = this.add.text(220, 510, 'Press [A] to use a fire spell if your path is blocked', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
             align: 'center'
         });
 
-        let fireText = this.add.text(220, 550, 'Press [A] to use a fire spell if your path is blocked', {
+        let interractText = this.add.text(240, 550, 'Press [Z] to continue/interract with objects', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
