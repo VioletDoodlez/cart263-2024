@@ -2,8 +2,8 @@
  * Game Engine Jam
  * Nicole Covaliu
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * Sidescrolling adventure game where the player collects items to progress to the next room.
+ * The game counld break the fourth wall.
  */
 
 "use strict";
@@ -15,7 +15,7 @@ let config = {
     physics: {
         default: 'arcade',
     },
-    scene: [Boot, Title, Play, Scene2, End]
+    scene: [Boot, Title, Play, Scene2, Scene3, End]
 };
 
 let game = new Phaser.Game(config);

@@ -1,7 +1,7 @@
-class Scene2 extends Phaser.Scene {
+class Scene3 extends Phaser.Scene {
     constructor() {
         super({
-            key: 'scene2'
+            key: 'scene3'
         });
     }
 
@@ -16,16 +16,19 @@ class Scene2 extends Phaser.Scene {
         this.background = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'bg');
 
         //displays door at the beginning of the hallway
-        this.door1 = this.physics.add.sprite(200, 262, 'door');
-
-        //display door at the end of hallway
-        this.door2 = this.physics.add.sprite(2100, 262, `door`);
+        this.door = this.physics.add.sprite(200, 262, 'door');
 
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
         this.avatar.hasFire = false;
+
+        //display cat at the end of hallway
+        this.cat = this.physics.add.sprite(2300, 500, `cat`);
+        this.cat.setImmovable(true);
+        this.collider = this.physics.add.collider(this.avatar, this.cat);
+        this.cat.play(`sleep`);
 
         //display box that blocks path
         this.box = this.physics.add.sprite(1900, 400, 'box');
@@ -205,11 +208,12 @@ class Scene2 extends Phaser.Scene {
         }
         //cat wakes up when interracted with and fades out to end screen
         else if (this.keyZ.isDown && this.avatar.x > 2000) {
+            this.cat.play('wake', true);
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('scene3');
+                    this.scene.start('end');
                 })
             })
         }
