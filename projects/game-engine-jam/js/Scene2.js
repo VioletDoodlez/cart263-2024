@@ -28,10 +28,10 @@ class Scene2 extends Phaser.Scene {
         this.avatar.hasFire = false;
 
         //display box that blocks path
-        this.box = this.physics.add.sprite(1900, 400, 'box');
-        this.box.setImmovable(true);
-        this.collider = this.physics.add.collider(this.avatar, this.box);
-        this.box.play(`block`);
+        // this.box = this.physics.add.sprite(1900, 400, 'box');
+        // this.box.setImmovable(true);
+        // this.collider = this.physics.add.collider(this.avatar, this.box);
+        // this.box.play(`block`);
 
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');

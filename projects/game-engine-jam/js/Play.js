@@ -5,6 +5,10 @@ class Play extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.avatar = data;
+    }
+
     create() {
         //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
@@ -139,7 +143,8 @@ class Play extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('scene2');
+                    this.scene.sleep('play');
+                    this.scene.launch('scene2', this.avatar);
                 })
             })
         }
