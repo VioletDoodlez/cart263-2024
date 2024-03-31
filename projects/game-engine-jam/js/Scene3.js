@@ -17,7 +17,8 @@ class Scene3 extends Phaser.Scene {
 
         //displays door at the beginning of the hallway
         this.door1 = this.physics.add.sprite(200, 262, 'door');
-        this.door2 = this.physics.add.sprite(2900, 262, 'door');
+        this.door2 = this.physics.add.sprite(2100, 262, `door`);
+        this.door3 = this.physics.add.sprite(2900, 262, 'door');
 
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
@@ -207,7 +208,16 @@ class Scene3 extends Phaser.Scene {
             this.fire = this.physics.add.sprite(1000, 400, 'fire');
             this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
         }
-        //cat wakes up when interracted with and fades out to end screen
+        else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.x < 2300) {
+            this.time.delayedCall(1000);
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('play');
+                })
+            })
+        }
+        //hidden door brings player to hidden location
         else if (this.keyZ.isDown && this.avatar.x > 2700 && this.avatar.x < 2900) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
