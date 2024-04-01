@@ -22,21 +22,28 @@ class Title extends Phaser.Scene {
             align: 'center'
         });
 
-        let moveText = this.add.text(200, 470, 'Use the left and right arrow keys to explore the house', {
+        let moveText = this.add.text(200, 450, 'Use the left and right arrow keys to explore the house', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
             align: 'center'
         });
 
-        let fireText = this.add.text(220, 510, 'Press [A] to use a fire spell if your path is blocked', {
+        let fireText = this.add.text(220, 490, 'Press [A] to use a fire spell if your path is blocked', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',
             align: 'center'
         });
 
-        let interractText = this.add.text(240, 550, 'Press [Z] to continue/interract with objects', {
+        let earthText = this.add.text(160, 530, 'Press [S] to use an earth spell to move objects marked with an X', {
+            fontFamily: 'american-typewriter',
+            fontSize: '20px',
+            fill: '#ffffff',
+            align: 'center'
+        });
+
+        let interractText = this.add.text(240, 570, 'Press [Z] to continue/interract with objects', {
             fontFamily: 'american-typewriter',
             fontSize: '20px',
             fill: '#ffffff',

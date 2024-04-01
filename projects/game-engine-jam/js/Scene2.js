@@ -21,17 +21,18 @@ class Scene2 extends Phaser.Scene {
         //display door at the end of hallway
         this.door2 = this.physics.add.sprite(2100, 262, `door`);
 
+        //display shelf that hides item
+        this.shelf = this.physics.add.sprite(1500, 262, 'shelf');
+        this.shelf.setImmovable(true);
+        this.shelf.play(`still`);
+
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
-        this.avatar.hasFire = false;
+        this.avatar.hasKey = false;
+        this.avatar.hasEarth = false;
 
-        //display box that blocks path
-        // this.box = this.physics.add.sprite(1900, 400, 'box');
-        // this.box.setImmovable(true);
-        // this.collider = this.physics.add.collider(this.avatar, this.box);
-        // this.box.play(`block`);
 
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');
@@ -44,7 +45,7 @@ class Scene2 extends Phaser.Scene {
 
         //calls arrow keys, A key and Z key
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         //calls creatAnimations() function
@@ -130,22 +131,22 @@ class Scene2 extends Phaser.Scene {
         };
         this.anims.create(openAnimationConfig);
 
-        //box is whole
-        let blockAnimationConfig = {
-            key: 'block',
-            frames: this.anims.generateFrameNumbers('box', {
+        //shelf is still
+        let stillAnimationConfig = {
+            key: 'still',
+            frames: this.anims.generateFrameNumbers('shelf', {
                 start: 0,
                 end: 0
             }),
             repeat: 0
         };
-        this.anims.create(blockAnimationConfig);
+        this.anims.create(stillAnimationConfig);
 
-        //box is broken
-        let brokeAnimationConfig = {
+        //shelf is moved
+        let shiftAnimationConfig = {
 
-            key: 'broke',
-            frames: this.anims.generateFrameNumbers('box', {
+            key: 'shift',
+            frames: this.anims.generateFrameNumbers('shelf', {
 
                 start: 1,
                 end: 2
@@ -154,13 +155,19 @@ class Scene2 extends Phaser.Scene {
             frameRate: 2,
             repeat: -1
         };
-        this.anims.create(brokeAnimationConfig);
+        this.anims.create(shiftAnimationConfig);
     }
 
-    //collect fire spell page
-    collectSpell(avatar, fire) {
-        avatar.hasFire = true;
-        fire.destroy();
+    //collect key
+    collectItem(avatar, key) {
+        avatar.hasKey = true;
+        key.destroy();
+    }
+
+    //collect earth spell page
+    collectSpell(avatar, earth) {
+        avatar.hasEarth = true;
+        earth.destroy();
     }
 
     update() {
@@ -191,20 +198,21 @@ class Scene2 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        //fire spell used when player is near box AND has collected spell page, removes collider to pass through
-        if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
-            this.box.play('broke', true);
-            this.physics.world.removeCollider(this.collider);
+        //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
+        if (this.keyS.isDown && this.avatar.x > 1500 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
+            this.shelf.play('shift', true);
+            this.key = this.physics.add.sprite(1400, 530, 'key');
+            this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
         }
 
-        //when table is interracted with, plays 'open' animation and spawns fire spell
+        //when table is interracted with, plays 'open' animation and spawns earth spell
         if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
             this.table.play('open', true);
-            this.fire = this.physics.add.sprite(1000, 400, 'fire');
-            this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
+            this.earth = this.physics.add.sprite(1000, 400, 'earth');
+            this.physics.add.overlap(this.avatar, this.earth, this.collectSpell, null, this);
         }
-        //cat wakes up when interracted with and fades out to end screen
-        else if (this.keyZ.isDown && this.avatar.x > 2000) {
+        //Goes to scene 3
+        else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.hasKey === true) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {

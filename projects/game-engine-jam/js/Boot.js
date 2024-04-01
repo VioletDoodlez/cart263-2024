@@ -35,6 +35,12 @@ class Boot extends Phaser.Scene {
             endFrame: 2
         })
 
+        this.load.spritesheet('shelf', 'assets/images/shelf-sheet.png', {
+            frameWidth: 400,
+            frameHeight: 400,
+            endFrame: 2
+        })
+
         this.load.spritesheet('table', 'assets/images/table-sheet.png', {
             frameWidth: 200,
             frameHeight: 200,
@@ -42,7 +48,9 @@ class Boot extends Phaser.Scene {
         })
 
         this.load.image('key', 'assets/images/key-01.png');
-        this.load.image('fire', 'assets/images/fire.png')
+        this.load.image('fire', 'assets/images/fire.png');
+        this.load.image('earth', 'assets/images/earth.png')
+
 
         this.load.image('door', 'assets/images/door.png')
 
