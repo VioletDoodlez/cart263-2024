@@ -22,7 +22,7 @@ class Scene2 extends Phaser.Scene {
         this.door2 = this.physics.add.sprite(2100, 262, `door`);
 
         //display shelf that hides item
-        this.shelf = this.physics.add.sprite(1500, 262, 'shelf');
+        this.shelf = this.physics.add.sprite(1500, 267, 'shelf');
         this.shelf.setImmovable(true);
         this.shelf.play(`still`);
 
@@ -211,6 +211,17 @@ class Scene2 extends Phaser.Scene {
             this.earth = this.physics.add.sprite(1000, 400, 'earth');
             this.physics.add.overlap(this.avatar, this.earth, this.collectSpell, null, this);
         }
+
+        else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
+            this.time.delayedCall(1000);
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('play');
+                })
+            })
+        }
+
         //Goes to scene 3
         else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.hasKey === true) {
             this.time.delayedCall(1000);

@@ -22,7 +22,7 @@ class Scene3 extends Phaser.Scene {
 
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
-        //this.avatar.setCollideWorldBounds(true);
+        this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
         this.avatar.hasFire = false;
 
@@ -200,6 +200,7 @@ class Scene3 extends Phaser.Scene {
         if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
             this.box.play('broke', true);
             this.physics.world.removeCollider(this.collider);
+            this.avatar.setCollideWorldBounds(false);
         }
 
         //when table is interracted with, plays 'open' animation and spawns fire spell

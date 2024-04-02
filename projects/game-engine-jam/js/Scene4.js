@@ -208,14 +208,24 @@ class Scene4 extends Phaser.Scene {
         }
         //cat wakes up when interracted with and fades out to end screen
         else if (this.keyZ.isDown && this.avatar.x > 2000) {
-            this.cat.play('wake', true);
-            this.time.delayedCall(1000);
-            this.cameras.main.fadeOut(1000, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-                this.time.delayedCall(1000, () => {
-                    this.scene.start('end');
-                })
+            this.tweens.add({
+                targets: this.cat,
+                alpha: 0,
+                duration: 2000,
+                repeat: 0,
+                onComplete: () => {
+
+                }
             })
+
+            // this.cat.play('wake', true);
+            // this.time.delayedCall(1000);
+            // this.cameras.main.fadeOut(1000, 0, 0, 0);
+            // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            //     this.time.delayedCall(1000, () => {
+            //         this.scene.start('end');
+            //     })
+            // })
         }
 
     }
