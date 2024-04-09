@@ -30,6 +30,9 @@ class Scene4 extends Phaser.Scene {
         this.collider = this.physics.add.collider(this.avatar, this.cat);
         this.cat.play(`sleep`);
 
+        this.water = this.physics.add.sprite(2300, 500, `water`);
+        this.water.alpha = 0;
+
         // //display box that blocks path
         // this.box = this.physics.add.sprite(1900, 400, 'box');
         // this.box.setImmovable(true);
@@ -214,7 +217,12 @@ class Scene4 extends Phaser.Scene {
                 duration: 2000,
                 repeat: 0,
                 onComplete: () => {
-
+                    this.tweens.add({
+                        targets: this.water,
+                        alpha: 1,
+                        duration: 2000,
+                        repeat: 0,
+                    })
                 }
             })
 
