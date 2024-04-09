@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     }
 
     init(data) {
-        this.avatar = data;
+        this.doorUsed = data.door;
     }
 
     create() {
@@ -27,6 +27,13 @@ class Play extends Phaser.Scene {
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
         this.avatar.hasKey = false;
+
+        if (this.doorUsed === "scene2ToPlay") {
+            this.avatar.x = 2100;
+            this.avatar.flipX = true;
+            this.frames.play(`fix`);
+            this.avatar.hasKey = true;
+        }
 
         //displays frames on wall in crooked position
         this.frames = this.physics.add.sprite(1000, 200, 'frames');
@@ -144,7 +151,9 @@ class Play extends Phaser.Scene {
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
                     this.scene.sleep('play');
-                    this.scene.launch('scene2', this.avatar);
+                    this.scene.launch('scene2', {
+                        door: "playToScene2"
+                    });
                 })
             })
         }

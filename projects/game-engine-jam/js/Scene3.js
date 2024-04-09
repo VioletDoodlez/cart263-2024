@@ -209,12 +209,25 @@ class Scene3 extends Phaser.Scene {
             this.fire = this.physics.add.sprite(1000, 400, 'fire');
             this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
         }
+        else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
+            this.time.delayedCall(1000);
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+                this.time.delayedCall(1000, () => {
+                    this.scene.start('play', {
+                        door: "scene3ToScene2"
+                    });
+                })
+            })
+        }
         else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.x < 2300) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('scene5');
+                    this.scene.start('scene5', {
+                        door: "scene3ToScene5"
+                    });
                 })
             })
         }
@@ -224,7 +237,9 @@ class Scene3 extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('scene4');
+                    this.scene.start('scene4', {
+                        door: "scene3ToScene4"
+                    });
                 })
             })
         }

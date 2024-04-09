@@ -33,6 +33,13 @@ class Scene2 extends Phaser.Scene {
         this.avatar.hasKey = false;
         this.avatar.hasEarth = false;
 
+        if (this.doorUsed === "scene3ToScene2") {
+            this.avatar.x = 2100;
+            this.avatar.flipX = true;
+            this.shelf.play(`shift`);
+            this.avatar.hasKey = true;
+            this.avatar.hasEarth = true;
+        }
 
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');
@@ -217,7 +224,9 @@ class Scene2 extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('play');
+                    this.scene.start('play', {
+                        door: "scene2ToPlay"
+                    });
                 })
             })
         }
@@ -228,7 +237,9 @@ class Scene2 extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('scene3');
+                    this.scene.start('scene3', {
+                        door: "scene2ToScene3"
+                    });
                 })
             })
         }
