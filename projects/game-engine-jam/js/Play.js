@@ -28,13 +28,6 @@ class Play extends Phaser.Scene {
         this.avatar.play(`idle`);
         this.avatar.hasKey = false;
 
-        if (this.doorUsed === "scene2ToPlay") {
-            this.avatar.x = 2100;
-            this.avatar.flipX = true;
-            this.frames.play(`fix`);
-            this.avatar.hasKey = true;
-        }
-
         //displays frames on wall in crooked position
         this.frames = this.physics.add.sprite(1000, 200, 'frames');
         this.frames.setImmovable(true);
@@ -51,6 +44,14 @@ class Play extends Phaser.Scene {
 
         //calls creatAnimations() function
         this.createAnimations();
+
+        if (this.doorUsed === "scene2ToPlay") {
+            this.avatar.x = 2100;
+            this.avatar.flipX = true;
+            this.avatar.hasKey = true;
+            this.frames.play('fix', true);
+        }
+
     }
 
     createAnimations() {
@@ -140,7 +141,7 @@ class Play extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
         //fixes frame and key "falls out" when interracted with
-        if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
+        if (!this.avatar.hasKey && this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
             this.frames.play('fix', true);
             this.key = this.physics.add.sprite(760, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);

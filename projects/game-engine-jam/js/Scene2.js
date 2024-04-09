@@ -5,6 +5,10 @@ class Scene2 extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.doorUsed = data.door;
+    }
+
     create() {
         //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
@@ -33,14 +37,6 @@ class Scene2 extends Phaser.Scene {
         this.avatar.hasKey = false;
         this.avatar.hasEarth = false;
 
-        if (this.doorUsed === "scene3ToScene2") {
-            this.avatar.x = 2100;
-            this.avatar.flipX = true;
-            this.shelf.play(`shift`);
-            this.avatar.hasKey = true;
-            this.avatar.hasEarth = true;
-        }
-
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');
         this.table.setImmovable(true);
@@ -57,6 +53,16 @@ class Scene2 extends Phaser.Scene {
 
         //calls creatAnimations() function
         this.createAnimations();
+
+        if (this.doorUsed === "scene3ToScene2") {
+            this.avatar.x = 2100;
+            this.avatar.flipX = true;
+            console.log('back from scene3');
+            this.avatar.hasKey = true;
+            this.avatar.hasEarth = true;
+            this.table.play(`open`, true);
+            this.shelf.play(`shift`, true);
+        }
     }
 
     createAnimations() {
@@ -213,7 +219,7 @@ class Scene2 extends Phaser.Scene {
         }
 
         //when table is interracted with, plays 'open' animation and spawns earth spell
-        if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
+        if (!this.avatar.hasEarth && this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
             this.table.play('open', true);
             this.earth = this.physics.add.sprite(1000, 400, 'earth');
             this.physics.add.overlap(this.avatar, this.earth, this.collectSpell, null, this);

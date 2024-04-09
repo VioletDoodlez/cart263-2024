@@ -5,6 +5,11 @@ class Scene3 extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.doorUsed = data.door;
+    }
+
+
     create() {
         //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
@@ -214,7 +219,7 @@ class Scene3 extends Phaser.Scene {
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
                 this.time.delayedCall(1000, () => {
-                    this.scene.start('play', {
+                    this.scene.start('scene2', {
                         door: "scene3ToScene2"
                     });
                 })

@@ -5,6 +5,10 @@ class Scene4 extends Phaser.Scene {
         });
     }
 
+    init(data) {
+        this.doorUsed = data.door;
+    }
+
     create() {
         //visuals fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0)
