@@ -7,13 +7,14 @@ class Boot extends Phaser.Scene {
 
     preload() {
         this.load.image('bg', 'assets/images/bg.png');
-        this.load.image('kitchen', 'assets/images/kitchen.png')
+        this.load.image('kitchen', 'assets/images/kitchen.png');
+        this.load.image('library', 'assets/images/library.png');
 
         this.load.spritesheet('frames', 'assets/images/frames-sheet.png', {
             frameWidth: 200,
             frameHeight: 200,
             endFrame: 2
-        })
+        });
 
         this.load.spritesheet('avatar', 'assets/images/philia-walk-sheet-01.png', {
             margin: 100,

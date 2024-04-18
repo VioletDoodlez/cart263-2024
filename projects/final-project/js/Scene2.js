@@ -17,7 +17,7 @@ class Scene2 extends Phaser.Scene {
         this.width = this.game.canvas.width * 3;
         this.height = this.game.canvas.height;
         this.physics.world.setBounds(0, 0, this.width, this.height);
-        this.background = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'bg');
+        this.background = this.add.tileSprite(this.width / 2, this.height / 2, this.width, this.height, 'library');
 
         //displays door at the beginning of the hallway
         this.door1 = this.physics.add.sprite(200, 262, 'door');
