@@ -25,22 +25,27 @@ class Scene3 extends Phaser.Scene {
         this.door2 = this.physics.add.sprite(2100, 262, `door`);
         this.door3 = this.physics.add.sprite(2900, 262, 'door');
 
+        //display cupboard
+        this.cupboard = this.physics.add.sprite(1000, 292, 'cupboard');
+        this.cupboard.setImmovable(true);
+        this.cupboard.play('shut');
+
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
         this.avatar.hasFire = false;
 
-        //display box that blocks path
-        this.box = this.physics.add.sprite(1900, 400, 'box');
-        this.box.setImmovable(true);
-        this.collider = this.physics.add.collider(this.avatar, this.box);
-        this.box.play(`block`);
+        // //display box that blocks path
+        // this.box = this.physics.add.sprite(1900, 400, 'box');
+        // this.box.setImmovable(true);
+        // this.collider = this.physics.add.collider(this.avatar, this.box);
+        // this.box.play(`block`);
 
-        //display table
-        this.table = this.physics.add.sprite(1000, 500, 'table');
-        this.table.setImmovable(true);
-        this.table.play(`closed`);
+        // //display table
+        // this.table = this.physics.add.sprite(1000, 500, 'table');
+        // this.table.setImmovable(true);
+        // this.table.play(`closed`);
 
         //creates camera that follows avatar as they move
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
@@ -82,22 +87,48 @@ class Scene3 extends Phaser.Scene {
         };
         this.anims.create(idleAnimationConfig);
 
-        //drawer is closed
-        let closedAnimationConfig = {
-            key: 'closed',
-            frames: this.anims.generateFrameNumbers('table', {
+        // //drawer is closed
+        // let closedAnimationConfig = {
+        //     key: 'closed',
+        //     frames: this.anims.generateFrameNumbers('table', {
+        //         start: 0,
+        //         end: 0
+        //     }),
+        //     repeat: 0
+        // };
+        // this.anims.create(closedAnimationConfig);
+
+        // //drawer is open
+        // let openAnimationConfig = {
+
+        //     key: 'open',
+        //     frames: this.anims.generateFrameNumbers('table', {
+
+        //         start: 1,
+        //         end: 2
+
+        //     }),
+        //     frameRate: 2,
+        //     repeat: -1
+        // };
+        // this.anims.create(openAnimationConfig);
+
+        //cupboard is shut
+        let shutAnimationConfig = {
+            key: 'shut',
+            frames: this.anims.generateFrameNumbers('cupboard', {
                 start: 0,
                 end: 0
             }),
             repeat: 0
         };
-        this.anims.create(closedAnimationConfig);
+        this.anims.create(shutAnimationConfig);
 
-        //drawer is open
-        let openAnimationConfig = {
+        //cupboard is open (right)
+        let openrightAnimationConfig = {
 
-            key: 'open',
-            frames: this.anims.generateFrameNumbers('table', {
+            key: 'openright',
+            frames: this.anims.generateFrameNumbers('cupboard', {
 
                 start: 1,
                 end: 2
@@ -106,39 +137,48 @@ class Scene3 extends Phaser.Scene {
             frameRate: 2,
             repeat: -1
         };
-        this.anims.create(openAnimationConfig);
+        this.anims.create(openrightAnimationConfig);
 
-        //box is whole
-        let blockAnimationConfig = {
-            key: 'block',
-            frames: this.anims.generateFrameNumbers('box', {
-                start: 0,
-                end: 0
-            }),
-            repeat: 0
-        };
-        this.anims.create(blockAnimationConfig);
+        //cupboard is open (left)
+        let openleftAnimationConfig = {
 
-        //box is broken
-        let brokeAnimationConfig = {
+            key: 'openleft',
+            frames: this.anims.generateFrameNumbers('cupboard', {
 
-            key: 'broke',
-            frames: this.anims.generateFrameNumbers('box', {
-
-                start: 1,
-                end: 2
+                start: 3,
+                end: 4
 
             }),
             frameRate: 2,
             repeat: -1
         };
-        this.anims.create(brokeAnimationConfig);
+        this.anims.create(openleftAnimationConfig);
+
+        //cupboard is open (all)
+        let openallAnimationConfig = {
+
+            key: 'openall',
+            frames: this.anims.generateFrameNumbers('cupboard', {
+
+                start: 5,
+                end: 6
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(openallAnimationConfig);
     }
 
     //collect fire spell page
     collectSpell(avatar, fire) {
         avatar.hasFire = true;
         fire.destroy();
+    }
+
+    collectCheese(avatar, cheese) {
+        avatar.hasCheese = true;
+        cheese.destroy();
     }
 
     update() {
@@ -169,18 +209,33 @@ class Scene3 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        //fire spell used when player is near box AND has collected spell page, removes collider to pass through
-        if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
-            this.box.play('broke', true);
-            this.physics.world.removeCollider(this.collider);
-            this.avatar.setCollideWorldBounds(false);
-        }
+        // //fire spell used when player is near box AND has collected spell page, removes collider to pass through
+        // if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
+        //     this.box.play('broke', true);
+        //     this.physics.world.removeCollider(this.collider);
+        //     this.avatar.setCollideWorldBounds(false);
+        // }
 
         //when table is interracted with, plays 'open' animation and spawns fire spell
-        if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
-            this.table.play('open', true);
-            this.fire = this.physics.add.sprite(1000, 400, 'fire');
-            this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
+        // if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
+        //     this.table.play('open', true);
+        //     this.fire = this.physics.add.sprite(1000, 400, 'fire');
+        //     this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
+        // }
+        //open cupboard
+        if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1200) {
+            this.cupboard.play('openright', true);
+            this.cupboard.openright = true;
+            if (this.cupboard.openleft === true) {
+                this.cupboard.play('openall', true);
+            }
+        }
+        else if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
+            this.cupboard.play('openleft', true);
+            this.cupboard.openleft = true;
+            if (this.cupboard.openright === true) {
+                this.cupboard.play('openall', true);
+            }
         }
         else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
             this.time.delayedCall(1000);

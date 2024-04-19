@@ -26,14 +26,14 @@ class Scene2 extends Phaser.Scene {
         this.door2 = this.physics.add.sprite(2100, 262, `door`);
 
         //display shelf that hides item
-        this.shelf = this.physics.add.sprite(1500, 282, 'shelf');
-        this.shelf.setImmovable(true);
-        this.shelf.play(`still`);
+        this.shelf1 = this.physics.add.sprite(1500, 282, 'shelf');
+        this.shelf1.setImmovable(true);
+        this.shelf1.play(`still`);
 
-        //display cupboard
-        this.cupboard = this.physics.add.sprite(1000, 292, 'cupboard');
-        this.cupboard.setImmovable(true);
-        this.cupboard.play('shut');
+        //display second shelf that hides item
+        this.shelf2 = this.physics.add.sprite(1000, 282, 'shelf');
+        this.shelf2.setImmovable(true);
+        this.shelf2.play(`still`);
 
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
@@ -66,7 +66,7 @@ class Scene2 extends Phaser.Scene {
             this.avatar.hasKey = true;
             this.avatar.hasEarth = true;
             this.table.play(`open`, true);
-            this.shelf.play(`shift`, true);
+            this.shelf1.play(`shift`, true);
         }
     }
 
@@ -174,62 +174,6 @@ class Scene2 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(shiftAnimationConfig);
-
-        //cupboard is shut
-        let shutAnimationConfig = {
-            key: 'shut',
-            frames: this.anims.generateFrameNumbers('cupboard', {
-                start: 0,
-                end: 0
-            }),
-            repeat: 0
-        };
-        this.anims.create(shutAnimationConfig);
-
-        //cupboard is open (right)
-        let openrightAnimationConfig = {
-
-            key: 'openright',
-            frames: this.anims.generateFrameNumbers('cupboard', {
-
-                start: 1,
-                end: 2
-
-            }),
-            frameRate: 2,
-            repeat: -1
-        };
-        this.anims.create(openrightAnimationConfig);
-
-        //cupboard is open (left)
-        let openleftAnimationConfig = {
-
-            key: 'openleft',
-            frames: this.anims.generateFrameNumbers('cupboard', {
-
-                start: 3,
-                end: 4
-
-            }),
-            frameRate: 2,
-            repeat: -1
-        };
-        this.anims.create(openleftAnimationConfig);
-
-        //cupboard is open (all)
-        let openallAnimationConfig = {
-
-            key: 'openall',
-            frames: this.anims.generateFrameNumbers('cupboard', {
-
-                start: 5,
-                end: 6
-
-            }),
-            frameRate: 2,
-            repeat: -1
-        };
-        this.anims.create(openallAnimationConfig);
     }
 
     //collect key
@@ -274,7 +218,7 @@ class Scene2 extends Phaser.Scene {
 
         //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
         if (this.keyS.isDown && this.avatar.x > 1500 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
-            this.shelf.play('shift', true);
+            this.shelf1.play('shift', true);
             this.key = this.physics.add.sprite(1400, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
         }
@@ -285,23 +229,6 @@ class Scene2 extends Phaser.Scene {
             this.earth = this.physics.add.sprite(1000, 400, 'earth');
             this.physics.add.overlap(this.avatar, this.earth, this.collectSpell, null, this);
         }
-
-        //open cupboard
-        else if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1200) {
-            this.cupboard.play('openright', true);
-            this.cupboard.openright = true;
-            if (this.cupboard.openleft === true) {
-                this.cupboard.play('openall', true);
-            }
-        }
-        else if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
-            this.cupboard.play('openleft', true);
-            this.cupboard.openleft = true;
-            if (this.cupboard.openright === true) {
-                this.cupboard.play('openall', true);
-            }
-        }
-
 
         //go back to play
         else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {

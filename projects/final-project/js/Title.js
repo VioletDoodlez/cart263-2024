@@ -57,7 +57,7 @@ class Title extends Phaser.Scene {
         //starts game
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.time.delayedCall(1000, () => {
-                this.scene.start('scene2');
+                this.scene.start('scene3');
             })
         });
     }
