@@ -25,8 +25,22 @@ class Scene3 extends Phaser.Scene {
         this.door2 = this.physics.add.sprite(2100, 262, `door`);
         this.door3 = this.physics.add.sprite(2900, 262, 'door');
 
+        // display counter
+        this.counter = this.physics.add.sprite(700, 240, 'counter');
+        this.counter.setImmovable(true);
+
+        // display knife holder
+        this.knife = this.physics.add.sprite(700, 230, 'knife');
+        this.knife.setImmovable(true);
+        this.knife.play('knife');
+
+        //display oven
+        this.oven = this.physics.add.sprite(1200, 292, 'oven');
+        this.oven.setImmovable(true);
+        this.oven.play('cold');
+
         //display cupboard
-        this.cupboard = this.physics.add.sprite(1000, 292, 'cupboard');
+        this.cupboard = this.physics.add.sprite(1700, 292, 'cupboard');
         this.cupboard.setImmovable(true);
         this.cupboard.play('shut');
 
@@ -35,21 +49,15 @@ class Scene3 extends Phaser.Scene {
         this.avatar.setCollideWorldBounds(true);
         this.avatar.play(`idle`);
         this.avatar.hasFire = false;
+        this.avatar.hasCheese = false;
+        this.avatar.hasEarth = true;
+        this.avatar.hasMouse = false;
 
-        // //display box that blocks path
-        // this.box = this.physics.add.sprite(1900, 400, 'box');
-        // this.box.setImmovable(true);
-        // this.collider = this.physics.add.collider(this.avatar, this.box);
-        // this.box.play(`block`);
-
-        // //display table
-        // this.table = this.physics.add.sprite(1000, 500, 'table');
-        // this.table.setImmovable(true);
-        // this.table.play(`closed`);
+        this.plant = this.physics.add.sprite(200, 400, `plant`);
 
         //creates camera that follows avatar as they move
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
-        this.cameras.main.setBounds(0, 0, this.width * 4, this.height);
+        this.cameras.main.setBounds(0, 0, this.width, this.height);
 
         //calls arrow keys, A key and Z key
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -87,31 +95,30 @@ class Scene3 extends Phaser.Scene {
         };
         this.anims.create(idleAnimationConfig);
 
-        // //drawer is closed
-        // let closedAnimationConfig = {
-        //     key: 'closed',
-        //     frames: this.anims.generateFrameNumbers('table', {
-        //         start: 0,
-        //         end: 0
-        //     }),
-        //     repeat: 0
-        // };
-        // this.anims.create(closedAnimationConfig);
+        let coldAnimationConfig = {
+            key: 'cold',
+            frames: this.anims.generateFrameNumbers('oven', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(coldAnimationConfig);
 
-        // //drawer is open
-        // let openAnimationConfig = {
+        //cupboard is open (right)
+        let hotAnimationConfig = {
 
-        //     key: 'open',
-        //     frames: this.anims.generateFrameNumbers('table', {
+            key: 'hot',
+            frames: this.anims.generateFrameNumbers('oven', {
 
-        //         start: 1,
-        //         end: 2
+                start: 1,
+                end: 2
 
-        //     }),
-        //     frameRate: 2,
-        //     repeat: -1
-        // };
-        // this.anims.create(openAnimationConfig);
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(hotAnimationConfig);
 
         //cupboard is shut
         let shutAnimationConfig = {
@@ -168,6 +175,31 @@ class Scene3 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(openallAnimationConfig);
+
+        let knifeAnimationConfig = {
+            key: 'knife',
+            frames: this.anims.generateFrameNumbers('knife', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(knifeAnimationConfig);
+
+        //cupboard is open (right)
+        let takeoneAnimationConfig = {
+
+            key: 'takeone',
+            frames: this.anims.generateFrameNumbers('knife', {
+
+                start: 1,
+                end: 2
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(takeoneAnimationConfig);
     }
 
     //collect fire spell page
@@ -209,32 +241,52 @@ class Scene3 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        // //fire spell used when player is near box AND has collected spell page, removes collider to pass through
-        // if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
-        //     this.box.play('broke', true);
-        //     this.physics.world.removeCollider(this.collider);
-        //     this.avatar.setCollideWorldBounds(false);
-        // }
+        //fire spell used when player is near box AND has collected spell page, oven turns on
+        if (this.keyA.isDown && this.avatar.x > 1000 && this.avatar.x < 1400 && this.avatar.hasFire === true) {
+            this.oven.play('hot', true);
 
-        //when table is interracted with, plays 'open' animation and spawns fire spell
-        // if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
-        //     this.table.play('open', true);
-        //     this.fire = this.physics.add.sprite(1000, 400, 'fire');
-        //     this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
-        // }
+            this.mouse = this.physics.add.sprite(1200, 530, 'mouse')
+            // this.physics.world.removeCollider(this.collider);
+        }
+
+
+        //take knife (optional)
+        if (this.keyZ.isDown && this.avatar.x >= 650 && this.avatar.x <= 750) {
+            this.knife.play('takeone', true);
+            this.avatar.setCollideWorldBounds(false);
+            this.cameras.main.setBounds(0, 0, this.width * 4, this.height);
+        }
         //open cupboard
-        if (this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1200) {
+        else if (!this.avatar.hasCheese && this.keyZ.isDown && this.avatar.x > 1600 && this.avatar.x < 2000) {
             this.cupboard.play('openright', true);
             this.cupboard.openright = true;
+
+            this.cheese = this.physics.add.sprite(1800, 410, 'cheese');
+            this.physics.add.overlap(this.avatar, this.cheese, this.collectCheese, null, this);
+
             if (this.cupboard.openleft === true) {
                 this.cupboard.play('openall', true);
+
+                if (!this.avatar.hasFire === true) {
+                    this.fire = this.physics.add.sprite(1700, 410, 'fire');
+                    this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
+                }
             }
         }
-        else if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
+        else if (this.keyZ.isDown && this.avatar.x > 1300 && this.avatar.x < 1600) {
             this.cupboard.play('openleft', true);
             this.cupboard.openleft = true;
+
+            this.fire = this.physics.add.sprite(1600, 410, 'fire');
+            this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
+
             if (this.cupboard.openright === true) {
                 this.cupboard.play('openall', true);
+
+                if (!this.avatar.hasCheese) {
+                    this.cheese = this.physics.add.sprite(1800, 410, 'cheese');
+                    this.physics.add.overlap(this.avatar, this.cheese, this.collectCheese, null, this);
+                }
             }
         }
         else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
