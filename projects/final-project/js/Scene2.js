@@ -31,9 +31,9 @@ class Scene2 extends Phaser.Scene {
         this.shelf1.play(`still`);
 
         //display second shelf that hides item
-        this.shelf2 = this.physics.add.sprite(1000, 282, 'shelf');
+        this.shelf2 = this.physics.add.sprite(1000, 282, 'xtrashelf');
         this.shelf2.setImmovable(true);
-        this.shelf2.play(`still`);
+        this.shelf2.play(`normal`);
 
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
@@ -41,27 +41,6 @@ class Scene2 extends Phaser.Scene {
         this.avatar.play(`idle`);
         this.avatar.hasKey = false;
         this.avatar.hasEarth = false;
-
-        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Find a spell page and use your powers with [A] near objects marked with an X', {
-            fill: '#000000',
-            align: 'center'
-        });
-        this.info.alpha = 0;
-
-        this.tweens.add({
-            targets: this.info,
-            alpha: 1,
-            duration: 5000,
-            repeat: 0,
-            onComplete: () => {
-                this.tweens.add({
-                    targets: this.info,
-                    alpha: 0,
-                    duration: 5000,
-                    repeat: 0,
-                })
-            }
-        })
 
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');
@@ -88,6 +67,7 @@ class Scene2 extends Phaser.Scene {
             this.avatar.hasEarth = true;
             this.table.play(`open`, true);
             this.shelf1.play(`shift`, true);
+            this.shelf2.play(`scare`, true);
         }
     }
 
@@ -195,12 +175,59 @@ class Scene2 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(shiftAnimationConfig);
+
+        //shelf is still
+        let normalAnimationConfig = {
+            key: 'normal',
+            frames: this.anims.generateFrameNumbers('xtrashelf', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(normalAnimationConfig);
+
+        //shelf is moved
+        let scareAnimationConfig = {
+
+            key: 'scare',
+            frames: this.anims.generateFrameNumbers('xtrashelf', {
+
+                start: 1,
+                end: 2
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(scareAnimationConfig);
     }
 
     //collect key
     collectItem(avatar, key) {
         avatar.hasKey = true;
         key.destroy();
+
+        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.info.alpha = 0;
+
+        this.tweens.add({
+            targets: this.info,
+            alpha: 1,
+            duration: 1000,
+            repeat: 0,
+            onComplete: () => {
+                this.tweens.add({
+                    targets: this.info,
+                    alpha: 0,
+                    duration: 1000,
+                    repeat: 0,
+                })
+            }
+        })
     }
 
     //collect earth spell page

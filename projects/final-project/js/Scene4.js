@@ -34,18 +34,6 @@ class Scene4 extends Phaser.Scene {
         this.collider = this.physics.add.collider(this.avatar, this.cat);
         this.cat.play(`sleep`);
 
-
-        // //display box that blocks path
-        // this.box = this.physics.add.sprite(1900, 400, 'box');
-        // this.box.setImmovable(true);
-        // this.collider = this.physics.add.collider(this.avatar, this.box);
-        // this.box.play(`block`);
-
-        // //display table
-        // this.table = this.physics.add.sprite(1000, 500, 'table');
-        // this.table.setImmovable(true);
-        // this.table.play(`closed`);
-
         //creates camera that follows avatar as they move
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
@@ -111,65 +99,7 @@ class Scene4 extends Phaser.Scene {
             repeat: 0
         };
         this.anims.create(sleepAnimationConfig);
-
-        // //drawer is closed
-        // let closedAnimationConfig = {
-        //     key: 'closed',
-        //     frames: this.anims.generateFrameNumbers('table', {
-        //         start: 0,
-        //         end: 0
-        //     }),
-        //     repeat: 0
-        // };
-        // this.anims.create(closedAnimationConfig);
-
-        // //drawer is open
-        // let openAnimationConfig = {
-
-        //     key: 'open',
-        //     frames: this.anims.generateFrameNumbers('table', {
-
-        //         start: 1,
-        //         end: 2
-
-        //     }),
-        //     frameRate: 2,
-        //     repeat: -1
-        // };
-        // this.anims.create(openAnimationConfig);
-
-        // //box is whole
-        // let blockAnimationConfig = {
-        //     key: 'block',
-        //     frames: this.anims.generateFrameNumbers('box', {
-        //         start: 0,
-        //         end: 0
-        //     }),
-        //     repeat: 0
-        // };
-        // this.anims.create(blockAnimationConfig);
-
-        // //box is broken
-        // let brokeAnimationConfig = {
-
-        //     key: 'broke',
-        //     frames: this.anims.generateFrameNumbers('box', {
-
-        //         start: 1,
-        //         end: 2
-
-        //     }),
-        //     frameRate: 2,
-        //     repeat: -1
-        // };
-        // this.anims.create(brokeAnimationConfig);
     }
-
-    //collect fire spell page
-    // collectSpell(avatar, fire) {
-    //     avatar.hasFire = true;
-    //     fire.destroy();
-    // }
 
     update() {
         this.handleInput();
@@ -199,12 +129,6 @@ class Scene4 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        //fire spell used when player is near box AND has collected spell page, removes collider to pass through
-        // if (this.keyA.isDown && this.avatar.x > 1200 && this.avatar.hasFire === true) {
-        //     this.box.play('broke', true);
-        //     this.physics.world.removeCollider(this.collider);
-        // }
-
         //when table is interracted with, plays 'open' animation and spawns fire spell
         if (this.keyZ.isDown && this.avatar.x > 800 && this.avatar.x < 1000) {
             this.table.play('open', true);
@@ -225,7 +149,7 @@ class Scene4 extends Phaser.Scene {
                         duration: 2000,
                         repeat: 0,
                         onComplete: () => {
-                            this.scene.start('end');
+                            this.scene.start('bad');
                         }
                     })
                 }

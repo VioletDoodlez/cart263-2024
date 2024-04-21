@@ -43,6 +43,12 @@ class Boot extends Phaser.Scene {
             endFrame: 2
         });
 
+        this.load.spritesheet('xtrashelf', 'assets/images/xtrashelf-sheet.png', {
+            frameWidth: 400,
+            frameHeight: 400,
+            endFrame: 2
+        });
+
         this.load.spritesheet('cupboard', 'assets/images/cupboard-sheet.png', {
             frameWidth: 400,
             frameHeight: 400,
@@ -92,7 +98,7 @@ class Boot extends Phaser.Scene {
         this.load.image('eyes', 'assets/images/eyes.png')
 
         this.load.on(`complete`, () => {
-            this.scene.start(`play`);
+            this.scene.start(`title`);
         });
     }
 

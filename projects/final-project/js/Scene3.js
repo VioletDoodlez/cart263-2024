@@ -56,7 +56,11 @@ class Scene3 extends Phaser.Scene {
         this.mouse = this.physics.add.sprite(1200, 530, 'mouse');
         this.mouse.alpha = 0;
 
-        this.plant = this.physics.add.sprite(200, 400, `plant`);
+        this.plant = this.physics.add.sprite(2100, 450, `plant`);
+        this.plant.setImmovable(true);
+        this.collider = this.physics.add.collider(this.avatar, this.plant);
+        this.plant.play('sprout');
+
 
         //creates camera that follows avatar as they move
         this.cameras.main.startFollow(this.avatar, true, 1, 1);
@@ -232,6 +236,38 @@ class Scene3 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(takeoneAnimationConfig);
+
+        let sproutAnimationConfig = {
+            key: 'sprout',
+            frames: this.anims.generateFrameNumbers('plant', {
+                start: 0,
+                end: 0
+            }),
+            repeat: 0
+        };
+        this.anims.create(sproutAnimationConfig);
+
+        let grownAnimationConfig = {
+            key: 'grown',
+            frames: this.anims.generateFrameNumbers('plant', {
+                start: 1,
+                end: 2
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(grownAnimationConfig);
+
+        let chompAnimationConfig = {
+            key: 'chomp',
+            frames: this.anims.generateFrameNumbers('plant', {
+                start: 3,
+                end: 4
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(chompAnimationConfig);
     }
 
     //collect fire spell page
@@ -240,14 +276,44 @@ class Scene3 extends Phaser.Scene {
         fire.destroy();
     }
 
+    //collect cheese
     collectCheese(avatar, cheese) {
         avatar.hasCheese = true;
         cheese.destroy();
     }
 
+    //collect mouse
     collectMouse(avatar, mouse) {
         avatar.hasMouse = true;
         mouse.destroy();
+    }
+
+    //collect key
+    collectItem(avatar, key) {
+        avatar.hasKey = true;
+        key.destroy();
+
+        // displays message
+        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.info.alpha = 0;
+
+        this.tweens.add({
+            targets: this.info,
+            alpha: 1,
+            duration: 1000,
+            repeat: 0,
+            onComplete: () => {
+                this.tweens.add({
+                    targets: this.info,
+                    alpha: 0,
+                    duration: 1000,
+                    repeat: 0,
+                })
+            }
+        })
     }
 
     update() {
@@ -287,8 +353,9 @@ class Scene3 extends Phaser.Scene {
             this.mouse.setVelocityX(-100);
 
             this.mouse.isScared = true;
-
-            // this.physics.world.removeCollider(this.collider);
+        }
+        else if (this.keyA.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasEarth === true) {
+            this.plant.play('grown', true);
         }
 
         if (this.mouse.x < 1100) {
@@ -350,6 +417,13 @@ class Scene3 extends Phaser.Scene {
             }
 
         }
+        else if (!avatar.hasKey === true && this.keyZ.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasMouse === true) {
+            this.plant.play('chomp', true);
+            this.physics.world.removeCollider(this.collider);
+
+            this.key = this.physics.add.sprite(2300, 530, 'key');
+            this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
+        }
         else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
@@ -361,7 +435,9 @@ class Scene3 extends Phaser.Scene {
                 })
             })
         }
-        else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.x < 2300) {
+
+        //brings player to final room
+        else if (this.keyZ.isDown && this.avatar.x > 2000 && this.avatar.x < 2300 && this.avatar.hasKey === true) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
