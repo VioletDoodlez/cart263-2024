@@ -117,26 +117,11 @@ class Play extends Phaser.Scene {
         avatar.hasKey = true;
         key.destroy();
 
-        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
+        this.keytext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
             fill: '#000000',
             align: 'center'
         });
-        this.info.alpha = 0;
-
-        this.tweens.add({
-            targets: this.info,
-            alpha: 1,
-            duration: 1000,
-            repeat: 0,
-            onComplete: () => {
-                this.tweens.add({
-                    targets: this.info,
-                    alpha: 0,
-                    duration: 1000,
-                    repeat: 0,
-                })
-            }
-        })
+        this.keytext.alpha = 0;
     }
 
     update() {
@@ -165,6 +150,24 @@ class Play extends Phaser.Scene {
         else {
             this.avatar.play('idle', true);
         }
+
+        if (this.avatar.hasKey === true) {
+            this.tweens.add({
+                targets: this.keytext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.keytext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
         //fixes frame and key "falls out" when interracted with
         if (!this.avatar.hasKey && this.keyZ.isDown && this.avatar.x > 900 && this.avatar.x < 1100) {
             this.frames.play('fix', true);
