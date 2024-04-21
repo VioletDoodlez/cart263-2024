@@ -22,6 +22,9 @@ class Play extends Phaser.Scene {
         //displays door at the end of the hallway
         this.door = this.physics.add.sprite(2100, 262, 'door');
 
+        this.message = this.physics.add.sprite(1500, 260, 'message');
+        this.message.alpha = 0;
+
         //displays avatar sprite in idle animation
         this.avatar = this.physics.add.sprite(200, 400, `avatar`);
         this.avatar.setCollideWorldBounds(true);
@@ -71,6 +74,7 @@ class Play extends Phaser.Scene {
             this.avatar.flipX = true;
             this.avatar.hasKey = true;
             this.frames.play('fix', true);
+            this.message.alpha = 1;
         }
 
     }

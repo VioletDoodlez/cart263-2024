@@ -77,6 +77,7 @@ class Boot extends Phaser.Scene {
             endFrame: 3
         });
 
+        this.load.image('message', 'assets/images/message.png');
 
         this.load.image('key', 'assets/images/key-01.png');
         this.load.image('cheese', 'assets/images/cheese.png');
@@ -91,7 +92,7 @@ class Boot extends Phaser.Scene {
         this.load.image('eyes', 'assets/images/eyes.png')
 
         this.load.on(`complete`, () => {
-            this.scene.start(`scene3`);
+            this.scene.start(`play`);
         });
     }
 
