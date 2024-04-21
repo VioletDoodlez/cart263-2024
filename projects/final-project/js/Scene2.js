@@ -208,32 +208,25 @@ class Scene2 extends Phaser.Scene {
         avatar.hasKey = true;
         key.destroy();
 
-        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
+        this.keytext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
             fill: '#000000',
             align: 'center'
         });
-        this.info.alpha = 0;
+        this.keytext.alpha = 0;
 
-        this.tweens.add({
-            targets: this.info,
-            alpha: 1,
-            duration: 1000,
-            repeat: 0,
-            onComplete: () => {
-                this.tweens.add({
-                    targets: this.info,
-                    alpha: 0,
-                    duration: 1000,
-                    repeat: 0,
-                })
-            }
-        })
     }
 
     //collect earth spell page
     collectSpell(avatar, earth) {
         avatar.hasEarth = true;
         earth.destroy();
+
+        this.earthtext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Found the Earth spell page!', {
+            fill: '#ffffff',
+            align: 'center'
+        });
+        this.earthtext.alpha = 0;
+
     }
 
     update() {
@@ -263,6 +256,41 @@ class Scene2 extends Phaser.Scene {
         else {
             this.avatar.play('idle', true);
         }
+
+        if (this.avatar.hasKey === true) {
+            this.tweens.add({
+                targets: this.keytext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.keytext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
+        if (this.avatar.hasEarth === true) {
+            this.tweens.add({
+                targets: this.earthtext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.earthtext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
 
         //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
         if (this.keyX.isDown && this.avatar.x > 1300 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {

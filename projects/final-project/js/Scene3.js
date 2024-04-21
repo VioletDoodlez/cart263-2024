@@ -274,18 +274,37 @@ class Scene3 extends Phaser.Scene {
     collectSpell(avatar, fire) {
         avatar.hasFire = true;
         fire.destroy();
+
+        this.firetext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Found the Fire spell page!', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.firetext.alpha = 0;
     }
 
     //collect cheese
     collectCheese(avatar, cheese) {
         avatar.hasCheese = true;
         cheese.destroy();
+
+        this.cheesetext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the cheese!', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.cheesetext.alpha = 0;
+
     }
 
     //collect mouse
     collectMouse(avatar, mouse) {
         avatar.hasMouse = true;
         mouse.destroy();
+
+        this.mousetext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the mouse!', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.mousetext.alpha = 0;
     }
 
     //collect key
@@ -294,26 +313,12 @@ class Scene3 extends Phaser.Scene {
         key.destroy();
 
         // displays message
-        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
+        this.keytext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
             fill: '#000000',
             align: 'center'
         });
-        this.info.alpha = 0;
+        this.keytext.alpha = 0;
 
-        this.tweens.add({
-            targets: this.info,
-            alpha: 1,
-            duration: 1000,
-            repeat: 0,
-            onComplete: () => {
-                this.tweens.add({
-                    targets: this.info,
-                    alpha: 0,
-                    duration: 1000,
-                    repeat: 0,
-                })
-            }
-        })
     }
 
     update() {
@@ -342,6 +347,74 @@ class Scene3 extends Phaser.Scene {
         //plays 'idle' animation
         else {
             this.avatar.play('idle', true);
+        }
+
+        if (this.avatar.hasFire === true) {
+            this.tweens.add({
+                targets: this.firetext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.firetext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
+        if (this.avatar.hasCheese === true) {
+            this.tweens.add({
+                targets: this.cheesetext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.cheesetext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
+        if (this.avatar.hasMouse === true) {
+            this.tweens.add({
+                targets: this.mousetext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.mousetext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
+        if (this.avatar.hasKey === true) {
+            this.tweens.add({
+                targets: this.keytext,
+                alpha: 1,
+                duration: 1000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.keytext,
+                        alpha: 0,
+                        duration: 500,
+                        repeat: 0,
+                    })
+                }
+            })
         }
 
         //fire spell used when player is near box AND has collected spell page, oven turns on
