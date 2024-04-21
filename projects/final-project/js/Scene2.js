@@ -53,7 +53,7 @@ class Scene2 extends Phaser.Scene {
 
         //calls arrow keys, A key and Z key
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         //calls creatAnimations() function
@@ -265,7 +265,7 @@ class Scene2 extends Phaser.Scene {
         }
 
         //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
-        if (this.keyA.isDown && this.avatar.x > 1300 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
+        if (this.keyX.isDown && this.avatar.x > 1300 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
             this.shelf1.play('shift', true);
             this.key = this.physics.add.sprite(1400, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);

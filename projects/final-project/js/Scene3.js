@@ -68,7 +68,7 @@ class Scene3 extends Phaser.Scene {
 
         //calls arrow keys, A key and Z key
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         //calls creatAnimations() function
@@ -345,7 +345,7 @@ class Scene3 extends Phaser.Scene {
         }
 
         //fire spell used when player is near box AND has collected spell page, oven turns on
-        if (this.keyA.isDown && this.avatar.x > 1000 && this.avatar.x < 1400 && this.avatar.hasFire === true) {
+        if (this.keyX.isDown && this.avatar.x > 1000 && this.avatar.x < 1400 && this.avatar.hasFire === true) {
             this.oven.play('hot', true);
 
             this.mouse.play('run', true);
@@ -354,7 +354,7 @@ class Scene3 extends Phaser.Scene {
 
             this.mouse.isScared = true;
         }
-        else if (this.keyA.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasEarth === true) {
+        else if (this.keyX.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasEarth === true) {
             this.plant.play('grown', true);
         }
 
@@ -417,7 +417,7 @@ class Scene3 extends Phaser.Scene {
             }
 
         }
-        else if (!avatar.hasKey === true && this.keyZ.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasMouse === true) {
+        else if (!this.avatar.hasKey === true && this.keyZ.isDown && this.avatar.x > 1600 && this.avatar.x < 2000 && this.avatar.hasMouse === true) {
             this.plant.play('chomp', true);
             this.physics.world.removeCollider(this.collider);
 

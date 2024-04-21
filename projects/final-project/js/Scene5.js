@@ -46,7 +46,7 @@ class Scene5 extends Phaser.Scene {
 
         //calls arrow keys, A key and Z key
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyX = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         this.keyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
 
         //calls creatAnimations() function
@@ -162,7 +162,7 @@ class Scene5 extends Phaser.Scene {
         }
 
         //fire spell used when player is near box AND has collected spell page, removes collider to pass through
-        if (this.keyA.isDown && this.avatar.x > 1300 && this.avatar.x < 1500 && this.avatar.hasFire === true) {
+        if (this.keyX.isDown && this.avatar.x > 1300 && this.avatar.x < 1500 && this.avatar.hasFire === true) {
             this.box.play('broke', true);
             this.physics.world.removeCollider(this.collider);
         }
