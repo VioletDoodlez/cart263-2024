@@ -53,6 +53,9 @@ class Scene3 extends Phaser.Scene {
         this.avatar.hasEarth = true;
         this.avatar.hasMouse = false;
 
+        this.mouse = this.physics.add.sprite(1200, 530, 'mouse');
+        this.mouse.alpha = 0;
+
         this.plant = this.physics.add.sprite(200, 400, `plant`);
 
         //creates camera that follows avatar as they move
@@ -119,6 +122,20 @@ class Scene3 extends Phaser.Scene {
             repeat: -1
         };
         this.anims.create(hotAnimationConfig);
+
+        let runAnimationConfig = {
+
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('mouse', {
+
+                start: 0,
+                end: 1
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(runAnimationConfig);
 
         //cupboard is shut
         let shutAnimationConfig = {
@@ -245,10 +262,21 @@ class Scene3 extends Phaser.Scene {
         if (this.keyA.isDown && this.avatar.x > 1000 && this.avatar.x < 1400 && this.avatar.hasFire === true) {
             this.oven.play('hot', true);
 
-            this.mouse = this.physics.add.sprite(1200, 530, 'mouse')
+            this.mouse.play('run', true);
+            this.mouse.alpha = 100;
+            this.mouse.setVelocityX(-100);
+
             // this.physics.world.removeCollider(this.collider);
         }
 
+        if (this.mouse.x < 1100) {
+            this.mouse.setVelocityX(100);
+            this.mouse.flipX = true;
+        }
+        else if (this.mouse.x > 1300) {
+            this.mouse.setVelocityX(-100);
+            this.mouse.flipX = false;
+        }
 
         //take knife (optional)
         if (this.keyZ.isDown && this.avatar.x >= 650 && this.avatar.x <= 750) {

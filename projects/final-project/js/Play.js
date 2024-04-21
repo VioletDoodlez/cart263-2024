@@ -28,6 +28,27 @@ class Play extends Phaser.Scene {
         this.avatar.play(`idle`);
         this.avatar.hasKey = false;
 
+        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Interract with objects with [Z]', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.info.alpha = 0;
+
+        this.tweens.add({
+            targets: this.info,
+            alpha: 1,
+            duration: 5000,
+            repeat: 0,
+            onComplete: () => {
+                this.tweens.add({
+                    targets: this.info,
+                    alpha: 0,
+                    duration: 5000,
+                    repeat: 0,
+                })
+            }
+        })
+
         //displays frames on wall in crooked position
         this.frames = this.physics.add.sprite(1000, 200, 'frames');
         this.frames.setImmovable(true);

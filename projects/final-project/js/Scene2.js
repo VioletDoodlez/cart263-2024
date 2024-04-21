@@ -42,6 +42,27 @@ class Scene2 extends Phaser.Scene {
         this.avatar.hasKey = false;
         this.avatar.hasEarth = false;
 
+        this.info = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Find a spell page and use your powers with [A] near objects marked with an X', {
+            fill: '#000000',
+            align: 'center'
+        });
+        this.info.alpha = 0;
+
+        this.tweens.add({
+            targets: this.info,
+            alpha: 1,
+            duration: 5000,
+            repeat: 0,
+            onComplete: () => {
+                this.tweens.add({
+                    targets: this.info,
+                    alpha: 0,
+                    duration: 5000,
+                    repeat: 0,
+                })
+            }
+        })
+
         //display table
         this.table = this.physics.add.sprite(1000, 500, 'table');
         this.table.setImmovable(true);
@@ -217,7 +238,7 @@ class Scene2 extends Phaser.Scene {
         }
 
         //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
-        if (this.keyA.isDown && this.avatar.x > 1500 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
+        if (this.keyA.isDown && this.avatar.x > 1300 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
             this.shelf1.play('shift', true);
             this.key = this.physics.add.sprite(1400, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);
