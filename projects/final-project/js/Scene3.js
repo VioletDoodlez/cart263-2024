@@ -137,6 +137,21 @@ class Scene3 extends Phaser.Scene {
         };
         this.anims.create(runAnimationConfig);
 
+        let eatAnimationConfig = {
+
+            key: 'eat',
+            frames: this.anims.generateFrameNumbers('mouse', {
+
+                start: 2,
+                end: 3
+
+            }),
+            frameRate: 2,
+            repeat: -1
+        };
+        this.anims.create(eatAnimationConfig);
+
+
         //cupboard is shut
         let shutAnimationConfig = {
             key: 'shut',
@@ -230,6 +245,11 @@ class Scene3 extends Phaser.Scene {
         cheese.destroy();
     }
 
+    collectMouse(avatar, mouse) {
+        avatar.hasMouse = true;
+        mouse.destroy();
+    }
+
     update() {
         this.handleInput();
     }
@@ -265,6 +285,8 @@ class Scene3 extends Phaser.Scene {
             this.mouse.play('run', true);
             this.mouse.alpha = 100;
             this.mouse.setVelocityX(-100);
+
+            this.mouse.isScared = true;
 
             // this.physics.world.removeCollider(this.collider);
         }
@@ -316,6 +338,17 @@ class Scene3 extends Phaser.Scene {
                     this.physics.add.overlap(this.avatar, this.cheese, this.collectCheese, null, this);
                 }
             }
+        }
+        else if (this.keyZ.isDown && this.avatar.x >= 1000 && this.avatar.x <= 1400 && this.avatar.hasCheese === true && this.mouse.isScared === true) {
+
+            this.mouse.setVelocityX(0);
+            this.mouse.play('eat', true);
+            this.mouse.isScared = false;
+
+            if (this.mouse.isScared === false) {
+                this.physics.add.overlap(this.avatar, this.mouse, this.collectMouse, null, this);
+            }
+
         }
         else if (this.keyZ.isDown && this.avatar.x >= 200 && this.avatar.x < 400) {
             this.time.delayedCall(1000);
