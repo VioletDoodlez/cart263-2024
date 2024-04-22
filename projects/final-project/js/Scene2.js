@@ -209,7 +209,7 @@ class Scene2 extends Phaser.Scene {
         key.destroy();
 
         this.keytext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
-            fill: '#000000',
+            fill: '#ffffff',
             align: 'center'
         });
         this.keytext.alpha = 0;
@@ -257,43 +257,42 @@ class Scene2 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        if (this.avatar.hasKey === true) {
-            this.tweens.add({
-                targets: this.keytext,
-                alpha: 1,
-                duration: 1000,
-                repeat: 0,
-                onComplete: () => {
-                    this.tweens.add({
-                        targets: this.keytext,
-                        alpha: 0,
-                        duration: 500,
-                        repeat: 0,
-                    })
-                }
-            })
-        }
-
         if (this.avatar.hasEarth === true) {
             this.tweens.add({
                 targets: this.earthtext,
                 alpha: 1,
-                duration: 1000,
+                duration: 2000,
                 repeat: 0,
                 onComplete: () => {
                     this.tweens.add({
                         targets: this.earthtext,
                         alpha: 0,
-                        duration: 500,
+                        duration: 1000,
                         repeat: 0,
                     })
                 }
             })
         }
 
+        if (this.avatar.hasKey === true) {
+            this.tweens.add({
+                targets: this.keytext,
+                alpha: 1,
+                duration: 2000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.keytext,
+                        alpha: 0,
+                        duration: 1000,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
 
         //earth spell used when player is near shelf AND has collected spell page, moves shelf to reveal key
-        if (this.keyX.isDown && this.avatar.x > 1300 && this.avatar.x < 1700 && this.avatar.hasEarth === true) {
+        if (!this.avatar.hasKey && this.keyX.isDown && this.avatar.x > 1300 && this.avatar.x < 1700) {
             this.shelf1.play('shift', true);
             this.key = this.physics.add.sprite(1400, 530, 'key');
             this.physics.add.overlap(this.avatar, this.key, this.collectItem, null, this);

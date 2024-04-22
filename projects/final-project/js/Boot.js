@@ -9,6 +9,7 @@ class Boot extends Phaser.Scene {
         this.load.image('bg', 'assets/images/bg.png');
         this.load.image('kitchen', 'assets/images/kitchen.png');
         this.load.image('library', 'assets/images/library.png');
+        this.load.image('storage', 'assets/images/storage.png');
 
         this.load.spritesheet('frames', 'assets/images/frames-sheet.png', {
             frameWidth: 200,
@@ -98,21 +99,12 @@ class Boot extends Phaser.Scene {
         this.load.image('eyes', 'assets/images/eyes.png')
 
         this.load.on(`complete`, () => {
-            this.scene.start(`scene2`);
+            this.scene.start(`title`);
         });
     }
 
     create() {
-        // let loadingTextStyle = {
-        //     fontFamily: 'sans-serif',
-        //     fontSize: '40px',
-        //     fill: '#ffffff',
-        //     align: 'center'
-        // };
-        // let loadingString = 'Loading...';
-        // this.loadingText = this.add.text(100, 100, loadingString, loadingTextStyle);
 
-        // this.scene.start('play');
     }
 
     update() {

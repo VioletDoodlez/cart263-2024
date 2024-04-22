@@ -276,7 +276,7 @@ class Scene3 extends Phaser.Scene {
         fire.destroy();
 
         this.firetext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Found the Fire spell page!', {
-            fill: '#000000',
+            fill: '#ffffff',
             align: 'center'
         });
         this.firetext.alpha = 0;
@@ -288,7 +288,7 @@ class Scene3 extends Phaser.Scene {
         cheese.destroy();
 
         this.cheesetext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the cheese!', {
-            fill: '#000000',
+            fill: '#ffffff',
             align: 'center'
         });
         this.cheesetext.alpha = 0;
@@ -314,7 +314,7 @@ class Scene3 extends Phaser.Scene {
 
         // displays message
         this.keytext = this.add.text(this.avatar.x - 90, this.avatar.y - 100, 'Got the key!', {
-            fill: '#000000',
+            fill: '#ffffff',
             align: 'center'
         });
         this.keytext.alpha = 0;
@@ -349,34 +349,17 @@ class Scene3 extends Phaser.Scene {
             this.avatar.play('idle', true);
         }
 
-        if (this.avatar.hasFire === true) {
-            this.tweens.add({
-                targets: this.firetext,
-                alpha: 1,
-                duration: 1000,
-                repeat: 0,
-                onComplete: () => {
-                    this.tweens.add({
-                        targets: this.firetext,
-                        alpha: 0,
-                        duration: 500,
-                        repeat: 0,
-                    })
-                }
-            })
-        }
-
         if (this.avatar.hasCheese === true) {
             this.tweens.add({
                 targets: this.cheesetext,
                 alpha: 1,
-                duration: 1000,
+                duration: 2000,
                 repeat: 0,
                 onComplete: () => {
                     this.tweens.add({
                         targets: this.cheesetext,
                         alpha: 0,
-                        duration: 500,
+                        duration: 1000,
                         repeat: 0,
                     })
                 }
@@ -387,13 +370,30 @@ class Scene3 extends Phaser.Scene {
             this.tweens.add({
                 targets: this.mousetext,
                 alpha: 1,
-                duration: 1000,
+                duration: 2000,
                 repeat: 0,
                 onComplete: () => {
                     this.tweens.add({
                         targets: this.mousetext,
                         alpha: 0,
-                        duration: 500,
+                        duration: 1000,
+                        repeat: 0,
+                    })
+                }
+            })
+        }
+
+        if (this.avatar.hasFire === true) {
+            this.tweens.add({
+                targets: this.firetext,
+                alpha: 1,
+                duration: 2000,
+                repeat: 0,
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.firetext,
+                        alpha: 0,
+                        duration: 1000,
                         repeat: 0,
                     })
                 }
@@ -404,13 +404,13 @@ class Scene3 extends Phaser.Scene {
             this.tweens.add({
                 targets: this.keytext,
                 alpha: 1,
-                duration: 1000,
+                duration: 2000,
                 repeat: 0,
                 onComplete: () => {
                     this.tweens.add({
                         targets: this.keytext,
                         alpha: 0,
-                        duration: 500,
+                        duration: 1000,
                         repeat: 0,
                     })
                 }
@@ -457,13 +457,13 @@ class Scene3 extends Phaser.Scene {
             if (this.cupboard.openleft === true) {
                 this.cupboard.play('openall', true);
 
-                if (!this.avatar.hasFire === true) {
+                if (!this.avatar.hasFire) {
                     this.fire = this.physics.add.sprite(1700, 410, 'fire');
                     this.physics.add.overlap(this.avatar, this.fire, this.collectSpell, null, this);
                 }
             }
         }
-        else if (this.keyZ.isDown && this.avatar.x > 1300 && this.avatar.x < 1600) {
+        else if (!this.avatar.hasFire && this.keyZ.isDown && this.avatar.x > 1300 && this.avatar.x < 1600) {
             this.cupboard.play('openleft', true);
             this.cupboard.openleft = true;
 
@@ -522,7 +522,7 @@ class Scene3 extends Phaser.Scene {
             })
         }
         //hidden door brings player to hidden location
-        else if (this.keyZ.isDown && this.avatar.x > 2700 && this.avatar.x < 2900) {
+        else if (this.keyZ.isDown && this.avatar.x > 2800 && this.avatar.x < 3100) {
             this.time.delayedCall(1000);
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {

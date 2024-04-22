@@ -155,13 +155,13 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: this.keytext,
                 alpha: 1,
-                duration: 1000,
+                duration: 2000,
                 repeat: 0,
                 onComplete: () => {
                     this.tweens.add({
                         targets: this.keytext,
                         alpha: 0,
-                        duration: 500,
+                        duration: 1000,
                         repeat: 0,
                     })
                 }
