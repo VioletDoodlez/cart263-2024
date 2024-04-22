@@ -7,7 +7,7 @@ class GoodEnd extends Phaser.Scene {
 
     preload() {
         //load end image
-        this.load.image('goodend', 'assets/images/goodend.png');
+        this.load.image('goodend', 'assets/images/goodend.PNG');
     }
 
     create() {

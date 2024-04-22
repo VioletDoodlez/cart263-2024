@@ -7,7 +7,7 @@ class BadEnd extends Phaser.Scene {
 
     preload() {
         //load end image
-        this.load.image('badend', 'assets/images/badend.png');
+        this.load.image('badend', 'assets/images/badend.PNG');
     }
 
     create() {
